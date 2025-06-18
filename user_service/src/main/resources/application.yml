@@ -1,0 +1,27 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: user-service # Eureka veya log-service gibi servislerin bu isme ihtiyacı olur
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/users
+    username: postgres
+    password: seydas
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+    eureka:
+  client:
+    service-url:
+      defaultZone: http://service-registry:8761/eureka/
