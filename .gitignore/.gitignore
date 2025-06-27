@@ -1,0 +1,60 @@
+# ========== JAVA / MAVEN / SPRING BOOT ==========
+
+# Maven build
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Logs
+*.log
+logs/
+*.pid
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Spring Boot environment files
+application.properties
+application.yml
+.env
+
+# ========== ANGULAR ==========
+
+/frontend/.angular/
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.env
+/frontend/src/environments/*.ts
+
+# ========== DOCKER ==========
+
+**/Dockerfile
+**/docker-compose.yml
+.docker/
+
+# ========== SECRETS ==========
+
+*.env
+.env.*
+secrets.*
+credentials.json
+*.key
+*.pem
+
+# ========== OTHER ==========
+
+*.swp
+*.bak
+*.tmp
+*.log
+*.idea/
+*.vscode/
