@@ -8,7 +8,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'dashboard', component: DashboardComponent }, // Yönlendirme yapılacak sayfa
+  { path: 'dashboard', component: Dashboard }, // Yönlendirme yapılacak sayfa
 
   { path: '**', redirectTo: '' }
 ];
@@ -17,7 +17,7 @@ export const routes: Routes = [
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, tap } from "rxjs";
-import { DashboardComponent } from './dashboard/dashboard';
+import { Dashboard } from './dashboard/dashboard';
 
 @Injectable({
   providedIn: 'root'

@@ -2,19 +2,14 @@ version: '3.8'
 
 services:
 
-  # Eureka
-  service-registry:
-    build: ./service-registry
-    ports:
-      - "8761:8761"
+  
 
   # API Gateway
   api-gateway:
     build: ./api-gateway
     ports:
       - "8080:8080"
-    depends_on:
-      - service-registry
+    
 
   # User Service
   user-service:
@@ -22,7 +17,6 @@ services:
     ports:
       - "8081:8081"
     depends_on:
-      - service-registry
       - postgres
 
   # Ticket Service
@@ -33,15 +27,13 @@ services:
     depends_on:
       - kafka
       - postgres
-      - service-registry
 
   # Admin Service
   admin-service:
     build: ./admin-service
     ports:
       - "8083:8083"
-    depends_on:
-      - service-registry
+    
 
   # Notification Service
   notification-service:
@@ -50,7 +42,6 @@ services:
       - "8084:8084"
     depends_on:
       - kafka
-      - service-registry
 
   # Log Service
   log-service:
