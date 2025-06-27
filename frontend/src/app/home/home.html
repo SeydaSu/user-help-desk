@@ -1,0 +1,18 @@
+<!-- Welcome Component -->
+<div id="welcome" class="container-fluid card login-container">
+  <div class="logo">
+    <h1 class="text-center">Help-Desk</h1>
+  </div>
+  
+  <p style="text-align: center; color: #666; margin-bottom: 30px;">
+    Hoş geldiniz! Devam etmek için giriş yapın veya hesap oluşturun.
+  </p>
+  <div class="welcome-buttons text-center">
+    <button (click)="goToLogin()" class="btn btn-success custom-btn me-3">
+      <i class="bi bi-box-arrow-in-right me-2"></i> Giriş Yap
+    </button>
+    <button (click)="goToRegister()" class="btn btn-secondary custom-btn">
+      <i class="bi bi-person-plus me-2"></i> Hesap Oluştur
+    </button>
+  </div>
+</div>
