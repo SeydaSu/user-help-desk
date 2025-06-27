@@ -24,7 +24,7 @@ Thumbs.db
 
 # Spring Boot environment files
 application.properties
-application.yml
+**/application.yml
 .env
 
 # ========== ANGULAR ==========
