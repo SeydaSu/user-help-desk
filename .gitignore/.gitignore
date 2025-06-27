@@ -50,8 +50,7 @@ credentials.json
 *.key
 *.pem
 
-# ========== OTHER ==========
-
+# ========== OTHER ==========t
 *.swp
 *.bak
 *.tmp
