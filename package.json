@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "@angular/platform-browser": "^20.0.3",
-    "zone.js": "^0.15.1"
-  },
-  "devDependencies": {
-    "@types/node": "^24.0.1"
-  }
-}
