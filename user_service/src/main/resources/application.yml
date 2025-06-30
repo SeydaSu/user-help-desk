@@ -1,14 +1,17 @@
 server:
   port: 8081
 
+jwt:
+  secret: "${SECRET_KEY}"
+
 spring:
   application:
     name: user-service # Eureka veya log-service gibi servislerin bu isme ihtiyacı olur
 
   datasource:
     url: jdbc:postgresql://localhost:5432/users
-    username: postgres
-    password: seydas
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
