@@ -13,13 +13,13 @@ import com.log.service.ILogService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/logs")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class LogController implements ILogController {
 
     private final ILogService logService;
 
-    @GetMapping
+    @GetMapping("/logs")
     public List<LogEntry> getAllLogs() {
         return logService.getAllLogs();
     }

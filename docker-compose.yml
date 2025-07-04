@@ -52,6 +52,7 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=seydas
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/helpdesk
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
     depends_on:
       - postgres
       - kafka
