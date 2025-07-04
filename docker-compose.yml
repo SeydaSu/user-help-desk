@@ -1,72 +1,62 @@
 version: '3.8'
 
 services:
-
-  
-
+   # Service Registry (Eureka)
+  service-registry:
+    build: ./service-registry
+    ports:
+      - "8761:8761"
+    networks:
+      - app-network
   # API Gateway
   api-gateway:
     build: ./api-gateway
     ports:
       - "8080:8080"
-    
+    networks:
+      - app-network
 
   # User Service
   user-service:
-    build: ./user-service
+    build: ./user_service
     ports:
       - "8081:8081"
+    environment:
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=seydas
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/helpdesk
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
     depends_on:
       - postgres
+      - kafka
+    networks:
+      - app-network
 
   # Ticket Service
   ticket-service:
-    build: ./ticket-service
+    build: ./ticket_service
     ports:
       - "8082:8082"
     depends_on:
       - kafka
       - postgres
-
-  # Admin Service
-  admin-service:
-    build: ./admin-service
-    ports:
-      - "8083:8083"
-    
-
-  # Notification Service
-  notification-service:
-    build: ./notification-service
-    ports:
-      - "8084:8084"
-    depends_on:
-      - kafka
+    networks:
+      - app-network
 
   # Log Service
   log-service:
-    build: ./log-service
+    build: ./log_service
     ports:
-      - "8085:8085"
-    depends_on:
-      - mongo
-      - kafka
-
-  # SLA Service
-  sla-service:
-    build: ./sla-service
-    ports:
-      - "8086:8086"
-    depends_on:
-      - kafka
-
-  # Tag Service
-  tag-service:
-    build: ./tag-service
-    ports:
-      - "8087:8087"
+    - "8083:8083"
+    environment:
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=seydas
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/helpdesk
     depends_on:
       - postgres
+      - kafka
+    networks:
+      - app-network
 
   # Angular Frontend
   frontend:
@@ -75,13 +65,21 @@ services:
       - "4200:80"
     depends_on:
       - api-gateway
+    networks:
+      - app-network
 
-  # Kafka + Zookeeper
+  # Zookeeper
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
     ports:
       - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - app-network
 
+  # Kafka
   kafka:
     image: confluentinc/cp-kafka:7.4.0
     ports:
@@ -90,19 +88,35 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
+    depends_on:
+      - zookeeper
+    networks:
+      - app-network
 
   # PostgreSQL
   postgres:
     image: postgres:15
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: seydas
+      POSTGRES_DB: helpdesk
     ports:
-      - "5432:5432"
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
 
-  # MongoDB
-  mongo:
-    image: mongo:6.0
-    ports:
-      - "27017:27017"
+
+# Networks
+networks:
+  app-network:
+    driver: bridge
+
+# Volumes
+volumes:
+  postgres_data:
+  mongo_data:
+
+

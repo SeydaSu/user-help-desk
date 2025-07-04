@@ -55,6 +55,12 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+					<!-- Ya da kullandığınız Spring Boot sürümüne uygun -->
+		</dependency>
+
+		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
@@ -96,9 +102,9 @@
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 		<dependency>
-    		<groupId>io.github.cdimascio</groupId>
-   		 	<artifactId>dotenv-java</artifactId>
-    		<version>3.0.0</version>
+			<groupId>io.github.cdimascio</groupId>
+			<artifactId>dotenv-java</artifactId>
+			<version>3.0.0</version>
 		</dependency>
 
 	</dependencies>

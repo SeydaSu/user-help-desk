@@ -2,16 +2,16 @@ server:
   port: 8081
 
 jwt:
-  secret: "${SECRET_KEY}"
+  secret: ed1c5a96c0a150f3b3fae7e897c2eca18fe507e3b614a18bc81a21926a2c893c
 
 spring:
   application:
-    name: user-service # Eureka veya log-service gibi servislerin bu isme ihtiyacı olur
+    name: user-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/users
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://postgres:5432/helpdesk
+    username: postgres
+    password: seydas
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -24,10 +24,16 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
+  kafka:
+    bootstrap-servers: kafka:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://service-registry:8761/eureka/
     fetch-registry: true
     register-with-eureka: true
   instance:

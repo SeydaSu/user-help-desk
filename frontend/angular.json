@@ -5,7 +5,14 @@
   "projects": {
     "frontend": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "css"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -13,7 +20,12 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "outputPath": "dist/frontend",
+            "index": "src/index.html",
             "browser": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
@@ -24,27 +36,27 @@
             "styles": [
               "src/styles.css"
             ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "scripts": [],
+            "server": "src/main.server.ts"
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "3MB",
+                  "maximumError": "5MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "512kB",
+                  "maximumError": "1MB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": true,
+              "sourceMap": false,
+              "extractLicenses": true
             },
             "development": {
               "optimization": false,
@@ -66,12 +78,52 @@
           },
           "defaultConfiguration": "development"
         },
+        "serve-ssr": {
+          "builder": "@angular-devkit/build-angular:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "frontend:build:development",
+              "serverTarget": "frontend:build:development"
+            },
+            "production": {
+              "browserTarget": "frontend:build:production", 
+              "serverTarget": "frontend:build:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@angular-devkit/build-angular:prerender",
+          "options": {
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "frontend:build:production",
+              "serverTarget": "frontend:build:production"
+            },
+            "development": {
+              "browserTarget": "frontend:build:development",
+              "serverTarget": "frontend:build:development"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
         "extract-i18n": {
-          "builder": "@angular/build:extract-i18n"
+          "builder": "@angular/build:extract-i18n",
+          "options": {
+            "buildTarget": "frontend:build"
+          }
         },
         "test": {
           "builder": "@angular/build:karma",
           "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               {
@@ -81,6 +133,16 @@
             ],
             "styles": [
               "src/styles.css"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
         }
@@ -88,6 +150,9 @@
     }
   },
   "cli": {
-    "analytics": "e0697418-06b6-451e-a0ff-0021fdfea63d"
+    "analytics": "e0697418-06b6-451e-a0ff-0021fdfea63d",
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

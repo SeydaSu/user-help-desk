@@ -1,6 +1,8 @@
 package com.project.service.impl;
 
 
+import java.time.LocalDateTime;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,6 +14,7 @@ import com.project.config.JwtService;
 import com.project.dto.AuthenticationRequest;
 import com.project.dto.AuthenticationResponse;
 import com.project.dto.RegisterRequest;
+import com.project.kafka.KafkaProducerService;
 import com.project.model.Role;
 import com.project.model.User;
 import com.project.repository.UserRepository;
@@ -27,6 +30,7 @@ public class AuthenticationService implements IAuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final KafkaProducerService kafkaProducerService;
 
 
     public AuthenticationResponse register(RegisterRequest request) {
@@ -38,6 +42,20 @@ public class AuthenticationService implements IAuthenticationService {
                 .build();
 
         userRepository.save(user);
+        // Kafka event JSON oluştur
+        String eventJson = """
+            {
+                "userId": "%s",
+                "email": "%s",
+                "eventType": "USER_REGISTERED",
+                "timestamp": "%s"
+             }
+        """.formatted(user.getId(), user.getEmail(), LocalDateTime.now());
+
+        // Kafka’ya event gönder
+        kafkaProducerService.sendUserRegisteredEvent(eventJson);
+
+
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -63,11 +81,28 @@ public class AuthenticationService implements IAuthenticationService {
     var user = userRepository.findByEmail(request.getEmail())
             .orElseThrow(() -> new UsernameNotFoundException("Kullanıcı bulunamadı."));
 
+
+     // Kafka event JSON oluştur
+    String eventJson = """
+        {
+            "userId": "%s",
+            "email": "%s",
+            "eventType": "USER_LOGGED_IN",
+            "timestamp": "%s"
+        }
+    """.formatted(user.getId(), user.getEmail(), LocalDateTime.now());
+
+    // Kafka'ya event gönder
+    kafkaProducerService.sendUserLoginEvent(eventJson);
+
+    
     var jwtToken = jwtService.generateToken(user);
     return AuthenticationResponse.builder()
             .token(jwtToken)
             .build();
-}
+    
+    
+    }
 
 
     

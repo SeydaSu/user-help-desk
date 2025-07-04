@@ -64,18 +64,20 @@ export class RegisterComponent {
         this.router.navigate(['/login']);
       },
       error: (error) => {
-        this.isLoading = false;
-        this.errorMsg = {};
-        if (error.status === 400 && error.error && typeof error.error === 'object') {
-          this.errorMsg = error.error;
-        } else if (error.error && error.error.message) {
-          this.errorMsg['general'] = error.error.message;
-        } else if (error.message) {
-          this.errorMsg['general'] = error.message;
-        } else {
-          this.errorMsg['general'] = 'Kayıt sırasında bir hata oluştu!';
-        }
-      }
+  this.isLoading = false;
+  this.errorMsg = {};
+  if (error.status === 400 && error.error && typeof error.error === 'object') {
+    this.errorMsg = error.error;
+  } else if (error.error && error.error.error) { // <-- burası eklendi
+    this.errorMsg['general'] = error.error.error;
+  } else if (error.error && error.error.message) {
+    this.errorMsg['general'] = error.error.message;
+  } else if (error.message) {
+    this.errorMsg['general'] = error.message;
+  } else {
+    this.errorMsg['general'] = 'Kayıt sırasında bir hata oluştu!';
+  }
+}
     });
   } else {
     this.isLoading = false;

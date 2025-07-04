@@ -1,9 +1,9 @@
-# Temel imaj
-FROM openjdk:17
+﻿FROM openjdk:17-slim
+
 WORKDIR /app
-
-# Maven ile build ettiğin jar dosyasını kopyala
-COPY target/user-service-0.0.1-SNAPSHOT.jar app.jar
-
-# Uygulamayı başlat
-ENTRYPOINT ["java", "-jar", "app.jar"]
+COPY target/*.jar app.jar
+COPY .env .env
+RUN addgroup --system spring && adduser --system spring --ingroup spring
+RUN chown -R spring:spring /app
+USER spring:spring
+ENTRYPOINT ["java", "-Xmx512m", "-Xms256m", "-jar", "app.jar"]
