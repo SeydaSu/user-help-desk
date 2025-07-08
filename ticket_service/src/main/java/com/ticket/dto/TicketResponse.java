@@ -1,5 +1,10 @@
 package com.ticket.dto;
 
+import java.time.LocalDateTime;
+
+import com.ticket.model.TicketPriorityEntity;
+import com.ticket.model.TicketStatusEntity;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,13 +25,13 @@ public class TicketResponse {
     @NotBlank(message = "Description cannot be empty")
     private String description;
     
-    private String priority;
+    private TicketPriorityEntity priority;
 
-    private String status;
+    private TicketStatusEntity status;
 
-    private String createdAt;
+    private LocalDateTime createdAt;
 
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 
     private String createdBy;
 

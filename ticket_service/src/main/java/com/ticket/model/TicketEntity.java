@@ -8,6 +8,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -36,11 +38,13 @@ public class TicketEntity {
     @Column(length = 1000)
     private String response;
     
-    @Enumerated(EnumType.STRING)
-    private TicketStatus status;
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private TicketStatusEntity status;
 
-    @Enumerated(EnumType.STRING)
-    private TicketPriority priority;
+    @ManyToOne
+    @JoinColumn(name = "priority_id")
+    private TicketPriorityEntity priority;
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

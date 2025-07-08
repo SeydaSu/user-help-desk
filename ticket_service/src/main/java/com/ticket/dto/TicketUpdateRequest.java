@@ -1,5 +1,8 @@
 package com.ticket.dto;
 
+import com.ticket.model.TicketPriorityEntity;
+import com.ticket.model.TicketStatusEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,8 +16,8 @@ public class TicketUpdateRequest {
 
     private String title;
     private String description;
-    private String priority;
-    private String status;
+    private TicketPriorityEntity priority;
+    private TicketStatusEntity status;
     private Long tagId;
 
     // Additional fields can be added as needed

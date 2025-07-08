@@ -1,5 +1,7 @@
 package com.ticket.dto;
 
+import com.ticket.model.TicketStatusEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TicketAdminUpdateRequest {
 
-    private String status;
+    private TicketStatusEntity status;
 
-    private String priority;
+    private TicketStatusEntity priority;
     
     private String response;
+
+    private Long ticketId;
     
 }
