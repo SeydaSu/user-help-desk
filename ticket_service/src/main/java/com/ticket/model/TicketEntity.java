@@ -38,13 +38,14 @@ public class TicketEntity {
     @Column(length = 1000)
     private String response;
     
-    @ManyToOne
-    @JoinColumn(name = "status_id")
-    private TicketStatusEntity status;
+    // Priority bilgisi (admin-service tarafından belirlenir)
+    @Column(name = "priority_id", nullable = false)
+    private Long priorityId;
 
-    @ManyToOne
-    @JoinColumn(name = "priority_id")
-    private TicketPriorityEntity priority;
+    // Status bilgisi (admin-service tarafından belirlenir)
+    @Column(name = "status_id", nullable = false)
+    private Long statusId;
+
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

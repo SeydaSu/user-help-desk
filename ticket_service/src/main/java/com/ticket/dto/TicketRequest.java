@@ -1,8 +1,5 @@
 package com.ticket.dto;
 
-import com.ticket.model.TicketPriorityEntity;
-import com.ticket.model.TicketStatusEntity;
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,9 +19,9 @@ public class TicketRequest {
     private String description;
 
     
-    private TicketPriorityEntity priority;
+    private Long priority;
 
-    private TicketStatusEntity status;
+    private Long status;
 
     private Long userId;
 

@@ -12,8 +12,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.ticket.model.TicketEntity;
-import com.ticket.model.TicketPriorityEntity;
-import com.ticket.model.TicketStatusEntity;
 
 
 
@@ -24,11 +22,6 @@ public class TicketRepositoryTest {
     @Autowired
     private TicketRepository ticketRepository;
 
-    @Autowired
-    private TicketStatusRepository ticketStatusRepository;
-
-    @Autowired
-    private TicketPriorityRepository ticketPriorityRepository;
 
     @BeforeEach
     public void cleanUp() {
@@ -38,24 +31,13 @@ public class TicketRepositoryTest {
 
     @Test
     public void TicketRepository_GetAllTickets_ReturnsAllTickets() {
-        TicketStatusEntity ticketStatusEntity
-                = TicketStatusEntity.builder()
-                .name("Open")
-                .build();
-        TicketPriorityEntity ticketPriorityEntity
-                = TicketPriorityEntity.builder()
-                .name("High")
-                .build();
-                
-        // Save the referenced entities FIRST
-        ticketStatusRepository.save(ticketStatusEntity);
-        ticketPriorityRepository.save(ticketPriorityEntity);
+ 
 
         TicketEntity ticket1 = TicketEntity.builder()
                 .title("Ticket 1")
                 .description("Description for ticket 1")
-                .status(ticketStatusEntity)
-                .priority(ticketPriorityEntity)
+                //.statusId(1L)
+                //.priorityId(1L)
                 .createdBy("user1")
                 .tagId(1L)
                 .userId(1L)
@@ -64,8 +46,8 @@ public class TicketRepositoryTest {
         TicketEntity ticket2 = TicketEntity.builder()
                 .title("Ticket 2")  
                 .description("Description for ticket 2")
-                .status(ticketStatusEntity)
-                .priority(ticketPriorityEntity)
+                //.statusId(2L)
+                //.priorityId(2L)
                 .createdBy("user2")
                 .tagId(2L)
                 .userId(2L)
@@ -81,20 +63,12 @@ public class TicketRepositoryTest {
 
     @Test
     public void TicketRepository_FindById_ReturnsTicket() {
-        TicketStatusEntity TicketStatusEntity
-                = com.ticket.model.TicketStatusEntity.builder()
-                .name("Open")
-                .build();
-        TicketPriorityEntity TicketPriorityEntity
-                = com.ticket.model.TicketPriorityEntity.builder()
-                .name("High")
-                .build();
 
         TicketEntity ticket = TicketEntity.builder()
                 .title("Ticket 1")
                 .description("Description for ticket 1")
-                .status(TicketStatusEntity)
-                .priority(TicketPriorityEntity)
+                //.statusId(1L)
+                //.priorityId(1L)
                 .createdBy("user")
                 .tagId(1L)
                 .userId(1L)
