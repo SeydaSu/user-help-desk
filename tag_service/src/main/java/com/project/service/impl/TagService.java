@@ -24,41 +24,41 @@ public class TagService implements ITagService {
 
 
     @Override
-public TagResponse createTag(TagRequest request) {
-    String createdBy = "unknown";
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (authentication != null && authentication.isAuthenticated()) {
-        createdBy = authentication.getName();
+    public TagResponse createTag(TagRequest request) {
+        String createdBy = "unknown";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            createdBy = authentication.getName();
+        }
+
+        // Eğer name boşsa veya zaten varsa, hata fırlat
+        if (request.getName() == null || request.getName().isBlank()) {
+            throw new TagNotFoundException("Tag name cannot be empty");
+        }
+
+        if (tagRepository.findByName(request.getName()) != null) {
+            throw new TagNotFoundException("Tag already exists");
+        }
+
+        TagEntity tag = TagEntity.builder()
+                .name(request.getName())
+                .createdBy(createdBy)
+                .build();
+
+        TagEntity savedTag = tagRepository.save(tag);
+
+        return TagResponse.builder()
+                .name(savedTag.getName())
+                .createdAt(savedTag.getCreatedAt())
+                .createdBy(savedTag.getCreatedBy())
+                .build();
     }
-
-    // Eğer name boşsa veya zaten varsa, hata fırlat
-    if (request.getName() == null || request.getName().isBlank()) {
-        throw new TagNotFoundException("Tag name cannot be empty");
-    }
-
-    if (tagRepository.findByName(request.getName()) != null) {
-        throw new TagNotFoundException("Tag already exists");
-    }
-
-    TagEntity tag = TagEntity.builder()
-            .name(request.getName())
-            .createdBy(createdBy)
-            .build();
-
-    TagEntity savedTag = tagRepository.save(tag);
-
-    return TagResponse.builder()
-            .name(savedTag.getName())
-            .createdAt(savedTag.getCreatedAt())
-            .createdBy(savedTag.getCreatedBy())
-            .build();
-}
 
 
 
     @Override
     public List<TagEntity> getAllTags() {
-        return tagRepository.findAll();
+            return tagRepository.findAll();
     }
-    
+        
 }

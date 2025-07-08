@@ -22,9 +22,9 @@ public class TicketResponse {
     @NotBlank(message = "Description cannot be empty")
     private String description;
     
-    private Long priority;
+    private Long priorityId;
 
-    private Long status;
+    private Long statusId;
 
     private LocalDateTime createdAt;
 

@@ -1,5 +1,9 @@
 package com.ticket.exception;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-public class TicketNotFoundException {
-    
+@Getter
+@RequiredArgsConstructor
+public class TicketNotFoundException extends RuntimeException {
+    private final String message;
 }

@@ -21,9 +21,12 @@ public class TicketRequest {
     
     private Long priority;
 
-    private Long status;
+    private Long statusId;
 
     private Long userId;
+
+    @NotBlank
+    private Long tagId;
 
 
     
