@@ -1,5 +1,5 @@
 package com.ticket.service.impl;
 
-public interface TicketServiceImpl {
+public class TicketQueryService {
 
 }
