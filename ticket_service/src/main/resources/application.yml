@@ -28,6 +28,12 @@ spring:
   cloud:
     config:
       enabled: false
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 5000
+            readTimeout: 5000
 
   kafka:
     bootstrap-servers: kafka:9092

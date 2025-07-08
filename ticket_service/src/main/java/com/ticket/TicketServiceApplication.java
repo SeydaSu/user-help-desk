@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication(scanBasePackages = "com.ticket")
 @EnableJpaRepositories(basePackages = "com.ticket.repository")
 @EntityScan(basePackages = "com.ticket.model")
+@EnableFeignClients
 public class TicketServiceApplication {
 
 	public static void main(String[] args) {
