@@ -13,8 +13,8 @@ public class TicketUpdateRequest {
 
     private String title;
     private String description;
-    private Long priority;
-    private Long status;
+    private Long priorityId;
+    private Long statusId;
     private Long tagId;
 
     // Additional fields can be added as needed

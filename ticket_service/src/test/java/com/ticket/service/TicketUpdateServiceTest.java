@@ -10,7 +10,6 @@ import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
 
-import com.ticket.dto.TicketRequest;
 import com.ticket.dto.TicketResponse;
 import com.ticket.dto.TicketUpdateRequest;
 import com.ticket.exception.TicketNotFoundException;
@@ -26,8 +25,8 @@ public class TicketUpdateServiceTest {
                 .id(1L)
                 .title("Ticket 1")
                 .description("Description for ticket 1")
-                //.statusId(1L)
-                //.priorityId(1L)
+                .statusId(1L)
+                .priorityId(1L)
                 .createdBy("user")
                 .tagId(1L)
                 .userId(1L)
@@ -52,7 +51,7 @@ public class TicketUpdateServiceTest {
 
         TicketUpdateService ticketService = new TicketUpdateService(ticketRepository);
 
-        assertThrows(TicketNotFoundException.class, () -> ticketService.updateTicket(1L, new TicketRequest("Updated Title", "Updated Description", 1L, 1L, 1L)));
+        assertThrows(TicketNotFoundException.class, () -> ticketService.updateTicket(1L, new TicketUpdateRequest("Updated Title", "Updated Description", 1L, 1L, 1L)));
 
         verify(ticketRepository, times(0)).save(any(TicketEntity.class));
     }
