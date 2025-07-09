@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
 
@@ -30,7 +30,7 @@ public class TicketQueryController {
 
 
     @GetMapping("ticket/{id}")
-    public TicketResponse getTicketById(@RequestBody Long id) {
+    public TicketResponse getTicketById(@PathVariable Long id) {
         return ticketQueryService.getTicketById(id);
     }
    

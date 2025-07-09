@@ -1,6 +1,8 @@
 package com.ticket.controller;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +20,7 @@ public class TicketUpdateController {
     private final ITicketUpdateService ticketUpdateService;
 
     @PostMapping("ticket/{id}")
-    public TicketResponse updateTicket(Long id, TicketUpdateRequest request) {
+    public TicketResponse updateTicket(@PathVariable Long id, @RequestBody TicketUpdateRequest request) {
         return ticketUpdateService.updateTicket(id, request);
     }
 
