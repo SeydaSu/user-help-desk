@@ -1,40 +1,57 @@
 .sidenav {
-  background: #9dcdb3;
+  background: #d2e3d7f6;
   transition: all 0.5s ease;
   position: fixed;
   z-index: 1;
   top: 0;
-  width: 16.5625rem;
+  width: 20.5625rem;
   height: 100vh;
   box-shadow: 0.063rem 0 1.25rem 0 #8690a3;
 }
 .sidenav-collapsed {
   width: 5rem;
 }
-.sidenav .logo-container {
+.logo-container {
   display: flex;
   align-items: center;
-  padding: 0.938rem 0.938rem 0 0.938rem;
+  justify-content: space-between;
+  padding: 1rem;
   width: 100%;
 }
-.sidenav .logo-container .logo {
-  background: #fff;
-  text-align: center;
-  width: 3rem;
-  min-width: 3rem;
-  border-radius: 0.313rem;
-  padding: 0.313rem;
-  font-size: 24px;
-  font-weight: 900;
-  cursor: pointer;
+
+.logo {
+  background-color: #3b5142;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  font-size: 22px;
+  font-weight: 800;
   border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
 }
-.sidenav .logo-container .logo-text {
-  margin-left: 1.5rem;
-  font-size: 24px;
-  font-weight: 700;
+
+.logo:hover {
+  background-color: #3b5142;
+}
+
+.logo-text {
+  margin-left: 16px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.logo-icon {
+  font-size: 32px;
   color: #fff;
 }
+
+
 .sidenav .logo-container .btn-close {
   margin-left: auto;
   cursor: pointer;
@@ -67,7 +84,7 @@
   display: flex;
   align-items: center;
   height: 3rem;
-  color: #f3f3f3;
+  color: #0c0b0b;
   text-decoration: none;
   border-radius: 0.625rem;
   transition: all 0.3s ease;
@@ -83,14 +100,39 @@
   margin-left: 1.5rem;
 }
 .sidenav-nav .sidenav-nav-item:hover .sidenav-nav-link {
-  background-color: #fff;
+  background-color: #4842423b;
   color: #000;
 }
 
+.sidenav-collapsed .sidenav-nav {
+  align-items: flex-start;
+  padding: 1rem 0.5rem;
+}
+
+.sidenav-collapsed .sidenav-nav-link {
+  justify-content: center;
+}
+
+.sidenav-collapsed .sidenav-link-text {
+  display: none;
+}
+
 .active {
-  background-color: #fff;
+  background-color: #ffffff;
 }
 .active .sidenav-link-icon,
 .active .sidenav-link-text {
   color: #000;
+  font-size: 18px; /* veya daha büyük: 20px, 22px */
+  font-weight: 600; /* biraz daha kalın görünüm için */
+  letter-spacing: 0.5px;
+}
+
+
+
+
+.logo-text-main {
+  color: #3b5142; /* beyaz */
+  font-weight: bold;
+  font-size: 26px;
 }

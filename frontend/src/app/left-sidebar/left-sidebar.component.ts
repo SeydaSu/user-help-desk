@@ -22,7 +22,7 @@ export class LeftSidebarComponent {
     , {
       RouterLink: '/tickets',
       icon: 'fal fa-ticket-alt',
-      label: 'Crete Ticket'
+      label: 'Create Ticket'
     }, {
       RouterLink: '/tickets',
       icon: 'fal fa-ticket-alt',

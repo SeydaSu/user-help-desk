@@ -1,5 +1,26 @@
-<div class="body" [ngClass]="sizeClass()">
-    <router-outlet>
+<div class="dashboard-container">
+  <!-- Sol kenar çubuğu -->
+  <app-left-sidebar
+    [isLeftSideBarCollapsed]="isLeftSideBarCollapsed()"
+    (changeIsLeftSideBarCollapsed)="changeIsLeftSideBarCollapsed($event)"
+  ></app-left-sidebar>
 
-    </router-outlet>
+  <!-- Sağdaki ana içerik alanı -->
+  <div class="main-content-area" [ngClass]="sizeClass()">
+    <router-outlet></router-outlet>
+  </div>
+  <header class="dashboard-header">
+   
+      <!-- User Info -->
+      <div class="text-right">
+        <div class="font-semibold text-sm text-gray-800"></div>
+        <button type="button" 
+                    class="btn btn-success" 
+          (click)="logout()"
+        >
+          Logout
+        </button>
+      </div>
+    
+  </header>
 </div>

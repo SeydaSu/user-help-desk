@@ -17,25 +17,8 @@ import { Dashboard } from "./dashboard/dashboard";
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App implements OnInit {
+export class App {
   constructor(private http: HttpClient) {} 
   protected title = 'User Help Desk';
-  isLeftSideBarCollapsed = signal<boolean>(false);
-  screenWidth = signal<number>(window.innerWidth);
-
-  @HostListener('window:resize')
-  onResize(): void {
-    this.screenWidth.set(window.innerWidth);
-    if(this.screenWidth() < 768) {
-      this.isLeftSideBarCollapsed.set(true);
-    }
-  }
-
-  ngOnInit(): void {
-      this.isLeftSideBarCollapsed.set(this.screenWidth() < 768);
-  }
-  
-  changeIsLeftSideBarCollapsed(isLeftSideBarCollapsed: boolean): void {
-    this.isLeftSideBarCollapsed.set(isLeftSideBarCollapsed);
-  }
+ 
 }
