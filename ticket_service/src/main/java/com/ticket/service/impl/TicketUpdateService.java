@@ -1,5 +1,6 @@
 package com.ticket.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ticket.dto.TicketResponse;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TicketUpdateService implements ITicketUpdateService{
 
+    @Autowired
     private final TicketRepository ticketRepository;
 
     @Override

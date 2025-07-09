@@ -10,13 +10,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TicketAdminUpdateRequest {
+    
+    private Long ticketId;
 
-    private Long status;
+    private Long statusId;
 
-    private Long priority;
+    private Long priorityId;
     
     private String response;
 
-    private Long ticketId;
+    private Long tagId;
+
+    
     
 }

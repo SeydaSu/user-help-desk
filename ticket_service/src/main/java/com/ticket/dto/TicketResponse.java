@@ -21,6 +21,8 @@ public class TicketResponse {
     private String title;
     @NotBlank(message = "Description cannot be empty")
     private String description;
+
+    private String response;
     
     private Long priorityId;
 
