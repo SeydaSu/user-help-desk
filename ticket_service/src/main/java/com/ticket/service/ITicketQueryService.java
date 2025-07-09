@@ -2,11 +2,13 @@ package com.ticket.service;
 
 import java.util.List;
 
+
 import com.ticket.dto.TicketResponse;
+import com.ticket.model.TicketEntity;
 
 public interface ITicketQueryService {
 
-    List<TicketResponse> getTicketsByCurrentUser();
+    List<TicketEntity> getTicketsByCurrentUser();
 
-    List<TicketResponse> getTicketsById(Long ticketId);
+    TicketResponse getTicketById(Long ticketId);
 }
