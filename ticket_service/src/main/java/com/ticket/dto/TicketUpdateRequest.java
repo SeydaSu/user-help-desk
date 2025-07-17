@@ -1,6 +1,5 @@
 package com.ticket.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,26 +9,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TicketRequest {
+public class TicketUpdateRequest {
 
-    @NotBlank
     private String title;
-
-    @NotBlank
     private String description;
-
-    
-    private Long priority;
-
+    private Long priorityId;
     private Long statusId;
-
-    private Long userId;
-
-    @NotBlank
     private Long tagId;
 
-
+    // Additional fields can be added as needed
     
-
-   
 }
