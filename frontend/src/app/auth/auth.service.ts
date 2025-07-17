@@ -22,10 +22,7 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/register`, data);
   }
 
-  logout() {
-    localStorage.clear();
-  }
-
+ 
   isAuthenticated(): boolean {
   if (typeof window !== 'undefined') {
     return !!localStorage.getItem('token');
@@ -46,4 +43,22 @@ getRole(): string {
   }
   return '';
 }
+
+decodeToken(): any {
+  const token = localStorage.getItem('token');
+  if (!token) return null;
+
+  const payload = token.split('.')[1];
+  const decoded = atob(payload);
+  return JSON.parse(decoded);
+}
+
+
+
+  logout(){
+    localStorage.clear();
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/login';
+  }
 }
