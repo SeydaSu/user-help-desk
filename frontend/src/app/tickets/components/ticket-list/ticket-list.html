@@ -5,11 +5,8 @@
     <p class="ticket-description">{{ ticket.description }}</p>
 
     <div class="ticket-meta">
-      <span class="meta-item"><strong>Status:</strong> {{ ticket.statusId }}</span>
-      <span class="meta-item"><strong>Priority:</strong> {{ ticket.priorityId }}</span>
       <span class="meta-item"><strong>Tag:</strong> {{ ticket.tagId }}</span>
       <span class="meta-item"><strong>Created By:</strong> {{ ticket.createdBy }}</span>
-      <span class="meta-item"><strong>Created At:</strong> {{ ticket.createdAt | date:'mediumDate' }}</span>
     </div>
 
     <div class="ticket-actions">
