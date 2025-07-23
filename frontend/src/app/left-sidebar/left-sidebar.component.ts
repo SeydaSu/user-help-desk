@@ -1,10 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, output } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterModule, Routes } from '@angular/router';
+
+
+
 
 @Component({
   selector: 'app-left-sidebar',
-  imports: [RouterLink, RouterLinkActive, CommonModule],
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './left-sidebar.component.html',
   styleUrl: './left-sidebar.component.css'
 })
@@ -12,19 +16,21 @@ export class LeftSidebarComponent {
 
   isLeftSideBarCollapsed = input.required<boolean>();
   changeIsLeftSideBarCollapsed = output<boolean>();
- 
+   constructor(private router: Router) {}
+
+
   items = [
     {
-      RouterLink: '/dashboard',
+      routerLink: '/dashboard',
       icon: 'fal fa-home',
       label: 'Dashboard'
     }
     , {
-      RouterLink: '/tickets',
+      routerLink: '/ticket',
       icon: 'fal fa-ticket-alt',
       label: 'Create Ticket'
     }, {
-      RouterLink: '/tickets',
+      routerLink: '/tickets',
       icon: 'fal fa-ticket-alt',
       label: 'Tickets'
     }, {
@@ -32,7 +38,7 @@ export class LeftSidebarComponent {
       icon: 'fal fa-users',
       label: 'Profile'
     }, {
-      RouterLink: '/settings',
+      routerLink: '/settings',
       icon: 'fal fa-cog',
       label: 'Settings'
     }

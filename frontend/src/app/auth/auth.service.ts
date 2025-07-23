@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 
-import { tap } from "rxjs";
+import { Observable, tap } from "rxjs";
 import { AuthenticationResponse } from "../core/models/authentication_response";
 
 @Injectable({ providedIn: 'root' })
@@ -10,18 +10,22 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(data: { email: string; password: string }) {
-    return this.http.post<AuthenticationResponse>(`${this.apiUrl}/login`, data).pipe(
+  login(data: { email: string; password: string }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/login`, data).pipe(
       tap(res => {
-        localStorage.setItem('token', res.token);
+        if (res.token) {
+          localStorage.setItem('token', res.token);
+        }
+        if (res.role) {
+          localStorage.setItem('role', res.role);
+        }
       })
     );
   }
 
-  register(data: { email: string; username: string; password: string }) {
-    return this.http.post(`${this.apiUrl}/register`, data);
+  register(data: { email: string; username: string; password: string }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/register`, data);
   }
-
  
   isAuthenticated(): boolean {
   if (typeof window !== 'undefined') {

@@ -58,3 +58,12 @@ credentials.json
 *.log
 *.idea/
 *.vscode/
+node_modules/@ngneat/*.ts
+node_modules/@ngneat/elf-entities/*.ts
+*.cjs.js
+*.esm.js
+*.d.ts
+*.md
+
+
+

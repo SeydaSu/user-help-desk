@@ -25,7 +25,7 @@ export class Dashboard implements OnInit {
 
   constructor(private authService: AuthService) {
 
-    console.log(this.user?.name); // "Şeyda Yılmaz"
+    console.log(this.user?.name); 
 
   }
 

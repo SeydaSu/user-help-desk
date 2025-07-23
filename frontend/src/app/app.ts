@@ -18,7 +18,8 @@ import { Dashboard } from "./dashboard/dashboard";
   styleUrl: './app.css'
 })
 export class App {
-  constructor(private http: HttpClient) {} 
+    
+      
   protected title = 'User Help Desk';
  
 }

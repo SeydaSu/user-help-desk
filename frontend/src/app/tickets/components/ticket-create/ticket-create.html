@@ -1,0 +1,73 @@
+<div class="logo-container">
+    <button class="logo" (click)="goToDashboard()">
+      <i class="fas fa-user-circle logo-icon"></i>
+    </button>
+    <div>
+
+  </div>
+
+<form class="ticket-form" [formGroup]="ticketForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="title">Title</label>
+    <input id="title" formControlName="title" />
+    <div
+      *ngIf="ticketForm.get('title')?.touched && ticketForm.get('title')?.invalid"
+    >
+      Title is required.
+    </div>
+  </div>
+
+  <div>
+    <label for="description">Description</label>
+    <textarea id="description" formControlName="description"></textarea>
+    <div
+      *ngIf="ticketForm.get('description')?.touched && ticketForm.get('description')?.invalid"
+    >
+      Description must be at least 10 characters.
+    </div>
+  </div>
+
+  <div>
+    <label for="tagId">Category (Tag)</label>
+    <select id="tagId" formControlName="tagId">
+      <option [value]="null">Select</option>
+      <option *ngFor="let tag of tags" [value]="tag.id">{{ tag.name }}</option>
+    </select>
+    <div
+      *ngIf="ticketForm.get('tagId')?.touched && ticketForm.get('tagId')?.invalid"
+    >
+      Category selection is required.
+    </div>
+  </div>
+
+  <div>
+    <label for="priorityId">Priority</label>
+    <select id="priorityId" formControlName="priorityId">
+      <option [value]="null">Select</option>
+      <option *ngFor="let p of priorities" [value]="p.id">{{ p.label }}</option>
+    </select>
+    <div
+      *ngIf="ticketForm.get('priorityId')?.touched && ticketForm.get('priorityId')?.invalid"
+    >
+      Priority selection is required.
+    </div>
+  </div>
+
+  <div>
+    <label for="statusId">Status</label>
+    <select id="statusId" formControlName="statusId">
+      <option [value]="null">Select</option>
+      <option *ngFor="let p of status" [value]="p.id">{{ p.label }}</option>
+    </select>
+    <div
+      *ngIf="ticketForm.get('statusId')?.touched && ticketForm.get('statusId')?.invalid"
+    >
+      Status selection is required.
+    </div>
+  </div>
+
+  <div *ngIf="showSuccessMessage" class="success-message">
+    🎉 Ticket created successfully!
+  </div>
+  <button type="submit">Create Ticket</button>
+</form>
