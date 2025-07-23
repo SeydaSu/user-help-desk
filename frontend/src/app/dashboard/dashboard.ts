@@ -16,7 +16,7 @@ import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterOutlet, CommonModule, LeftSidebarComponent, HomeComponent],
+  imports: [RouterOutlet, CommonModule, LeftSidebarComponent],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
