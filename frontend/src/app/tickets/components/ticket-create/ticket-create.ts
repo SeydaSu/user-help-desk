@@ -54,16 +54,20 @@ onSubmit() {
     return;
   }
 
-  this.ticketFacade.createTicket(this.ticketForm.value);
-
-  this.showSuccessMessage = true;
-
-  
-  setTimeout(() => {
-    this.showSuccessMessage = false;
-    this.router.navigate(['/dashboard']);
-  }, 1200);
+  this.ticketFacade.createTicket(this.ticketForm.value).subscribe({
+    next: () => {
+      this.showSuccessMessage = true;
+      setTimeout(() => {
+        this.showSuccessMessage = false;
+        this.router.navigate(['/dashboard']);
+      }, 1200);
+    },
+    error: () => {
+      // alert veya error handling yapılabilir
+    }
+  });
 }
+
 
   goToDashboard(){
     this.router.navigate(['/dashboard']);

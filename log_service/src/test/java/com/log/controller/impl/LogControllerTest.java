@@ -15,11 +15,19 @@ import com.log.service.ILogService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(LogController.class)
+@WebMvcTest(controllers = LogController.class, excludeAutoConfiguration = {
+    org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration.class,
+    org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration.class
+})
+
+@AutoConfigureMockMvc(addFilters = false)
+@ContextConfiguration(classes = LogController.class)
 class LogControllerTest {
 
     @Autowired

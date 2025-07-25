@@ -5,23 +5,23 @@ import { Ticket } from './ticket.model';
 
 @Injectable({ providedIn: 'root' })
 export class TicketRepository {
-  private API_URL = 'http://localhost:8082/api/v1/ticket';
+  private apiUrl = 'http://localhost:8082/api/v1/ticket';
 
   constructor(private http: HttpClient) {}
 
   getTickets(): Observable<Ticket[]> {
-    return this.http.get<Ticket[]>(this.API_URL);
+    return this.http.get<Ticket[]>(this.apiUrl);
   }
 
   getTicket(id: number): Observable<Ticket> {
-    return this.http.get<Ticket>(`${this.API_URL}/${id}`);
+    return this.http.get<Ticket>(`${this.apiUrl}/${id}`);
   }
 
   createTicket(ticket: Partial<Ticket>): Observable<Ticket> {
-    return this.http.post<Ticket>(this.API_URL, ticket);
+    return this.http.post<Ticket>(this.apiUrl, ticket);
   }
 
   updateTicket(id: number, ticket: Partial<Ticket>): Observable<Ticket> {
-    return this.http.put<Ticket>(`${this.API_URL}/${id}`, ticket);
+    return this.http.put<Ticket>(`${this.apiUrl}/${id}`, ticket);
   }
 }
