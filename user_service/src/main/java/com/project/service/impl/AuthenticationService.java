@@ -59,6 +59,7 @@ public class AuthenticationService implements IAuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .userId(user.getId().longValue())
                 .build();
     
     
@@ -99,6 +100,7 @@ public class AuthenticationService implements IAuthenticationService {
     var jwtToken = jwtService.generateToken(user);
     return AuthenticationResponse.builder()
             .token(jwtToken)
+            .userId(user.getId().longValue())
             .build();
     
     

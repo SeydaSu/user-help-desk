@@ -30,6 +30,19 @@ export class TicketFacade {
     return this.ticketQuery.error$;
   }
 
+  getAllTags() {
+  return this.ticketRepository.getAllTags();
+  }
+
+  getAllPriorities() {
+  return this.ticketRepository.getAllPriorities();
+  }
+
+  getAllStatuses() {
+  return this.ticketRepository.getAllStatuses();
+  }
+
+
   setTickets(tickets: Ticket[]) {
     this.ticketService.setTickets(tickets);
   }
