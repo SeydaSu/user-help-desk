@@ -80,6 +80,21 @@ services:
     networks:
       - app-network
 
+  # Admin Service
+  admin-service:
+    build: ./admin_service
+    ports:
+      - "8085:8085"
+    environment:
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=seydas
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/helpdesk
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    depends_on:
+      - postgres
+      - kafka
+    networks:
+      - app-network
 
   # Angular Frontend
   frontend:
