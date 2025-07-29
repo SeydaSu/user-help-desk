@@ -1,5 +1,7 @@
 package com.project.dto;
 
+import com.project.model.Role;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -25,5 +27,7 @@ public class RegisterRequest {
     @Size(min = 6, message = "Şifre en az 6 karakter olmalıdır")
     @NotBlank(message = "Şifre alanı boş olamaz")
     private String password;
+
+    private Role role;
 
 }

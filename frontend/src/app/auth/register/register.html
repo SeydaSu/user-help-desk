@@ -54,9 +54,10 @@
     <button (click)="register()" 
             type="button" 
             class="btn btn-success"
+            style="height: 40px"
             [disabled]="isLoading">
-      <span *ngIf="isLoading">Kayıt yapılıyor...</span>
-      <span *ngIf="!isLoading">Kayıt Ol</span>
+      <span *ngIf="isLoading">Registration in progress...</span>
+      <span *ngIf="!isLoading">Register</span>
     </button>
   </div>
 </div>
