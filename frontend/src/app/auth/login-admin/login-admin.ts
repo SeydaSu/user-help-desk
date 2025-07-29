@@ -5,13 +5,12 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [FormsModule, CommonModule],
-  templateUrl: './login.html',
-  styleUrls: ['./login.css']
+  selector: 'app-login-admin',
+  imports: [FormsModule,CommonModule],
+  templateUrl: './login-admin.html',
+  styleUrl: './login-admin.css'
 })
-export class LoginComponent {
+export class LoginAdminComponent {
   errorMsg: string[] = [];
   isLoading = false;
 
@@ -38,7 +37,7 @@ export class LoginComponent {
   }
 
   if (this.errorMsg.length === 0) {
-    this.authService.login(this.authenticationRequest).subscribe({
+    this.authService.login_admin(this.authenticationRequest).subscribe({
       next: (response) => {
         console.log('Login başarılı:', response);
         this.isLoading = false;
@@ -67,11 +66,8 @@ export class LoginComponent {
 }
 
 
-  goToRegister() {
-    this.router.navigate(['/register']);
+  goToBack() {
+    this.router.navigate(['login']);
   }
 
-  goToAdminLogin() {
-    this.router.navigate(['/admin_login']);
-  }
 }

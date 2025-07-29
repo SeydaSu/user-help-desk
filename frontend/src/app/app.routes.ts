@@ -6,6 +6,7 @@ import { Dashboard } from './dashboard/dashboard';
 import { TicketCreateComponent } from './tickets/components/ticket-create/ticket-create';
 import { TicketListComponent } from './tickets/components/ticket-list/ticket-list';
 import {  TicketDetailComponent } from './tickets/components/ticket-detail/ticket-detail';
+import { LoginAdminComponent } from './auth/login-admin/login-admin';
 
 
 export const routes: Routes = [
@@ -17,6 +18,7 @@ export const routes: Routes = [
   { path: 'ticket', component: TicketCreateComponent},
   { path: 'tickets', component: TicketListComponent},
   { path: 'ticket/:id', component: TicketDetailComponent },
+  { path: 'admin_login', component: LoginAdminComponent},
 
   { path: '**', redirectTo: '' }
 ];
