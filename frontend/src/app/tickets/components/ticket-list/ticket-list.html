@@ -1,0 +1,17 @@
+<div class="ticket-list">
+  <div class="ticket-card" *ngFor="let ticket of tickets$ | async">
+    <h2 class="ticket-title">{{ ticket.title }}</h2>
+
+    <p class="ticket-description">{{ ticket.description }}</p>
+
+    <div class="ticket-meta">
+      <span class="meta-item"><strong>Tag:</strong> {{ ticket.tagId }}</span>
+      <span class="meta-item"><strong>Created By:</strong> {{ ticket.createdBy }}</span>
+    </div>
+
+    <div class="ticket-actions">
+      <button class="btn-details" (click)="goToDetails(ticket.id)">Details</button>
+
+    </div>
+  </div>
+</div>

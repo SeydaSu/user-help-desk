@@ -123,8 +123,8 @@
 .active .sidenav-link-icon,
 .active .sidenav-link-text {
   color: #000;
-  font-size: 18px; /* veya daha büyük: 20px, 22px */
-  font-weight: 600; /* biraz daha kalın görünüm için */
+  font-size: 18px; 
+  font-weight: 600; 
   letter-spacing: 0.5px;
 }
 
@@ -132,7 +132,7 @@
 
 
 .logo-text-main {
-  color: #3b5142; /* beyaz */
+  color: #3b5142;
   font-weight: bold;
   font-size: 26px;
 }

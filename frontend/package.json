@@ -1,7 +1,6 @@
 {
   "name": "frontend",
   "version": "0.0.0",
-  
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -10,9 +9,7 @@
     "serve:ssr": "node dist/frontend/server/server.mjs",
     "test": "ng test",
     "lint": "ng lint"
-  }
-,
-
+  },
   "private": true,
   "dependencies": {
     "@angular/common": "^20.0.0",
@@ -24,6 +21,9 @@
     "@angular/router": "^20.0.3",
     "@angular/ssr": "^20.0.2",
     "@fortawesome/fontawesome-free": "^6.7.2",
+    "@ngneat/elf": "^2.5.1",
+    "@ngneat/elf-entities": "^5.0.2",
+    "@ngneat/elf-requests": "^1.9.2",
     "bootstrap": "^5.3.6",
     "express": "^5.1.0",
     "rxjs": "~7.8.0",
@@ -31,6 +31,11 @@
     "zone.js": "^0.15.1"
   },
   "devDependencies": {
+    "@angular-eslint/builder": "^20.1.1",
+    "@angular-eslint/eslint-plugin": "^20.1.1",
+    "@angular-eslint/eslint-plugin-template": "^20.1.1",
+    "@angular-eslint/schematics": "^20.1.1",
+    "@angular-eslint/template-parser": "^20.1.1",
     "@angular/build": "^20.0.2",
     "@angular/cli": "^20.0.2",
     "@angular/compiler-cli": "^20.0.0",
