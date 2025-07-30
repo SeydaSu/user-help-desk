@@ -1,6 +1,7 @@
 package com.ticket.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
@@ -39,31 +40,6 @@ public class TicketQueryService implements ITicketQueryService {
         
         return tickets;
     }
-
-    @Override
-    public List<TicketEntity> getAllTickets() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null || !authentication.isAuthenticated() || authentication.getAuthorities() == null) {
-            throw new TicketNotFoundException("User is not authenticated");
-        }
-
-        boolean isAdmin = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
-
-        if (!isAdmin) {
-            throw new TicketNotFoundException("Access denied: User is not an admin");
-        }
-
-        List<TicketEntity> tickets = ticketRepository.findAll();
-
-        if (tickets.isEmpty()) {
-            throw new TicketNotFoundException("No tickets found in the system.");
-        }
-
-        return tickets;
-}
-
 
 
     @Override

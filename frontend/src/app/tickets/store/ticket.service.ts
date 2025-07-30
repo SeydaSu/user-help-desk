@@ -3,19 +3,14 @@ import {
   addEntities,
   updateEntities,
   deleteEntities,
-  selectEntity,
   setEntities,
   setActiveId,
 } from '@ngneat/elf-entities';
 import { ticketStore } from './ticket.store';
 import { Ticket } from './ticket.model';
-import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TicketService {
-  getTicketById(id: number): Observable<Ticket | undefined> {
-    return ticketStore.pipe(selectEntity(id));
-  }
 
   setTickets(tickets: Ticket[]) {
     ticketStore.update(setEntities(tickets));

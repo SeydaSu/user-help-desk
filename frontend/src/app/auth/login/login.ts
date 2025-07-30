@@ -15,7 +15,7 @@ export class LoginComponent {
   errorMsg: string[] = [];
   isLoading = false;
 
-  
+  // Değişken ismi düzeltildi
   authenticationRequest = {
     email: '',
     password: ''
@@ -46,13 +46,16 @@ export class LoginComponent {
       },
       error: (error) => {
         this.isLoading = false;
-        this.errorMsg = []; 
+        this.errorMsg = []; // Önce mesajları temizle
 
+        // Backend’den gelen hata mesajını al
         if (error.status === 401) {
+          // Yetkisiz, genelde email veya şifre hatası
           this.errorMsg.push('Email veya şifre yanlış.');
         } else if (error.status === 404) {
           this.errorMsg.push('Kullanıcı bulunamadı.');
         } else if (error.error && error.error.message) {
+          // Backend özel mesaj gönderiyorsa
           this.errorMsg.push(error.error.message);
         } else if (error.message) {
           this.errorMsg.push(error.message);
@@ -69,9 +72,5 @@ export class LoginComponent {
 
   goToRegister() {
     this.router.navigate(['/register']);
-  }
-
-  goToAdminLogin() {
-    this.router.navigate(['/admin_login']);
   }
 }

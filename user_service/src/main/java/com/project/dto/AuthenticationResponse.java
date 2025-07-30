@@ -1,7 +1,5 @@
 package com.project.dto;
 
-import com.project.model.Role;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,9 +12,6 @@ import lombok.NoArgsConstructor;
 public class AuthenticationResponse {
 
     private String token;
-    private Long userId;
-    private Role role;
-    
 
     
 }

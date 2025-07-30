@@ -63,17 +63,7 @@ node_modules/@ngneat/elf-entities/*.ts
 *.cjs.js
 *.esm.js
 *.d.ts
-.nycrc
-.eslintrc
 *.md
-*.js
-*.json
-Makefile
-LICENSE*
-.npmignore
-.travis.yml
-FUNDING.yml
-test.sh
 
 
-node_modules/skema/lib/util.js
+

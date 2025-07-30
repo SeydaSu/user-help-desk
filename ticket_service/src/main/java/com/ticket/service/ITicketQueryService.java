@@ -10,7 +10,5 @@ public interface ITicketQueryService {
 
     List<TicketEntity> getTicketsByCurrentUser();
 
-    public List<TicketEntity> getAllTickets();
-
     TicketResponse getTicketById(Long ticketId);
 }

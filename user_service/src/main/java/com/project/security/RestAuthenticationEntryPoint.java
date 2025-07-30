@@ -13,27 +13,8 @@ import java.util.Map;
 
 @Component
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
-    
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, 
-                        AuthenticationException authException) throws IOException {
-        
-        String path = request.getServletPath();
-        
-        // Swagger endpoint'leri için 401 döndürme - bu endpoint'ler açık olmalı
-        if (path.startsWith("/swagger-ui") || 
-            path.startsWith("/v3/api-docs") || 
-            path.equals("/swagger-ui.html") ||
-            path.startsWith("/webjars/") ||
-            path.startsWith("/swagger-resources/") ||
-            path.startsWith("/configuration/") ||
-            path.equals("/")) {
-            
-            // Bu endpoint'ler için herhangi bir error döndürme
-            return;
-        }
-        
-        // Diğer endpoint'ler için normal 401 response
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         Map<String, String> error = new HashMap<>();

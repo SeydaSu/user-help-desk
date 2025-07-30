@@ -34,10 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         String path = request.getServletPath();
         // /api/v1/auth ile başlayan endpoint'lerde JWT kontrolü yapma
-        if (path.startsWith("/api/v1/auth") || 
-            path.startsWith("/swagger-ui") || 
-            path.startsWith("/v3/api-docs") || 
-            path.equals("/swagger-ui.html") ) {
+        if (path.startsWith("/api/v1/auth")) {
          filterChain.doFilter(request, response);
         return;
     }

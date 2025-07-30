@@ -39,7 +39,7 @@ public class AuthenticationController implements IAuthenticationController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> loginUser(
+    public ResponseEntity<AuthenticationResponse> login(
         
         
             @RequestBody AuthenticationRequest request) {
@@ -47,24 +47,9 @@ public class AuthenticationController implements IAuthenticationController {
                 System.out.println("Login denemesi: " + request.getEmail());
 
                 return ResponseEntity.ok(
-                    authenticationService.loginUser(request)
+                    authenticationService.login(request)
                 );
     }
-
-    
-    @PostMapping("/admin/login")
-    public ResponseEntity<AuthenticationResponse> loginAdmin(
-        
-    
-            @RequestBody AuthenticationRequest request) {
-                
-                System.out.println("Login denemesi: " + request.getEmail());
-
-                return ResponseEntity.ok(
-                    authenticationService.loginAdmin(request)
-                );
-    }
-
 
     @GetMapping("/test")
     public String test() {

@@ -8,8 +8,6 @@ public interface IAuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request);
 
-    public AuthenticationResponse loginUser(AuthenticationRequest request);
-    
-    public AuthenticationResponse loginAdmin(AuthenticationRequest request);
+    public AuthenticationResponse login(AuthenticationRequest request);
 
 }

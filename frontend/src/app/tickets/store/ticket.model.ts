@@ -3,31 +3,25 @@ export interface Ticket {
   title: string;
   description: string;
   response?: string;
-
-  // ID ile referans (seçim için)
   priorityId: number;
   statusId: number;
-  tagId: number;
-
-  // ID ile gelen veriye karşılık gösterim için (opsiyonel ama önerilir)
-  priority?: PriorityResponse;
-  status?: StatusResponse;
-  tag?: Tag;
-
   createdAt: string;
   updatedAt?: string;
   createdBy: string;
   userId: number;
+  tagId: number;
 }
 
-export interface PriorityResponse {
-  id: number;
-  name: string;
+export enum Priority {
+  LOW = 1,
+  MEDIUM = 2,
+  HIGH = 3,
 }
 
-export interface StatusResponse {
-  id: number;
-  name: string;
+export enum Status {
+  OPEN = 1,
+  IN_PROGRESS = 2,
+  CLOSED = 3,
 }
 
 export interface Tag {

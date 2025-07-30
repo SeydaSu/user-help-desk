@@ -17,24 +17,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
-@RequestMapping("/api/v1/ticket")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class TicketQueryController {
 
     private final ITicketQueryService ticketQueryService;
 
-    @GetMapping("/my")
+    @GetMapping("ticket/my")
     public List<TicketEntity> getTicketsByCurrentUser() {
         return ticketQueryService.getTicketsByCurrentUser();
     }
 
-    @GetMapping("/admin/list")
-    public List<TicketEntity> getAllTicketsForAdmin() {
-        return ticketQueryService.getAllTickets();
-    }
 
-
-    @GetMapping("/{id}")
+    @GetMapping("ticket/{id}")
     public TicketResponse getTicketById(@PathVariable Long id) {
         return ticketQueryService.getTicketById(id);
     }

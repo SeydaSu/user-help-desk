@@ -11,7 +11,5 @@ public interface IAuthenticationController {
 
     public ResponseEntity<AuthenticationResponse> register(RegisterRequest request);
 
-    public ResponseEntity<AuthenticationResponse> loginUser(AuthenticationRequest request);
-
-     public ResponseEntity<AuthenticationResponse> loginAdmin(AuthenticationRequest request);
+    public ResponseEntity<AuthenticationResponse> login(AuthenticationRequest request);
 }
