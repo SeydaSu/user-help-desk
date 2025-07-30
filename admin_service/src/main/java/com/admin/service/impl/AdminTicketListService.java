@@ -1,8 +1,6 @@
 package com.admin.service.impl;
 
 import java.util.List;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.admin.client.TicketClient;

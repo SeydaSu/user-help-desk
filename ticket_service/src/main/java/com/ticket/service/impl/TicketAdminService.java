@@ -13,102 +13,112 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class TicketAdminService implements ITicketAdminService  {
+public class TicketAdminService implements ITicketAdminService {
 
-    @Autowired
-    private final TicketRepository ticketRepository;
+        @Autowired
+        private final TicketRepository ticketRepository;
 
-    @Override
-    public TicketResponse respondToTicket(Long ticketId, TicketAdminUpdateRequest request) {
-       TicketEntity ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
+        @Override
+        public TicketResponse respondToTicket(Long ticketId, TicketAdminUpdateRequest request) {
+                if (request == null || request.getResponse() == null || request.getResponse().isBlank()) {
+                        throw new RuntimeException("Response content cannot be null or empty");
+                }
+                TicketEntity ticket = ticketRepository.findById(ticketId)
+                                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
 
-        // Update the ticket response
-        ticket.setResponse(request.getResponse());
-        
+                // Update the ticket response
+                ticket.setResponse(request.getResponse());
 
-        TicketEntity updatedTicket = ticketRepository.save(ticket);
+                TicketEntity updatedTicket = ticketRepository.save(ticket);
 
-        return TicketResponse.builder()
-                .id(updatedTicket.getId())
-                .title(updatedTicket.getTitle())
-                .description(updatedTicket.getDescription())
-                .statusId(updatedTicket.getStatusId())
-                .priorityId(updatedTicket.getPriorityId())
-                .tagId(updatedTicket.getTagId())
-                .createdBy(updatedTicket.getCreatedBy())
-                .userId(updatedTicket.getUserId())
-                .response(updatedTicket.getResponse()) // Assuming response field exists
-                .build();
-    }
+                return TicketResponse.builder()
+                                .id(updatedTicket.getId())
+                                .title(updatedTicket.getTitle())
+                                .description(updatedTicket.getDescription())
+                                .statusId(updatedTicket.getStatusId())
+                                .priorityId(updatedTicket.getPriorityId())
+                                .tagId(updatedTicket.getTagId())
+                                .createdBy(updatedTicket.getCreatedBy())
+                                .userId(updatedTicket.getUserId())
+                                .response(updatedTicket.getResponse()) // Assuming response field exists
+                                .build();
+        }
 
-    @Override
-    public TicketResponse updatePriority(Long ticketId, TicketAdminUpdateRequest request) {
-        TicketEntity ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
+        @Override
+        public TicketResponse updatePriority(Long ticketId, TicketAdminUpdateRequest request) {
+                TicketEntity ticket = ticketRepository.findById(ticketId)
+                                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
 
-        
-        ticket.setPriorityId(request.getPriorityId());
+                if (request == null || request.getPriorityId() == null ) {
+                        throw new RuntimeException("Response content cannot be null or empty");
+                }
+                ticket.setPriorityId(request.getPriorityId());
 
-        TicketEntity updatedTicket = ticketRepository.save(ticket);
+                TicketEntity updatedTicket = ticketRepository.save(ticket);
 
-        return TicketResponse.builder()
-                .id(updatedTicket.getId())
-                .title(updatedTicket.getTitle())
-                .description(updatedTicket.getDescription())
-                .statusId(updatedTicket.getStatusId())
-                .priorityId(updatedTicket.getPriorityId())
-                .tagId(updatedTicket.getTagId())
-                .createdBy(updatedTicket.getCreatedBy())
-                .userId(updatedTicket.getUserId())
-                .response(updatedTicket.getResponse()) // Assuming response field exists
-                .build();
-    }
+                return TicketResponse.builder()
+                                .id(updatedTicket.getId())
+                                .title(updatedTicket.getTitle())
+                                .description(updatedTicket.getDescription())
+                                .statusId(updatedTicket.getStatusId())
+                                .priorityId(updatedTicket.getPriorityId())
+                                .tagId(updatedTicket.getTagId())
+                                .createdBy(updatedTicket.getCreatedBy())
+                                .userId(updatedTicket.getUserId())
+                                .response(updatedTicket.getResponse()) // Assuming response field exists
+                                .build();
+        }
 
-    @Override
-    public TicketResponse updateStatus(Long ticketId, TicketAdminUpdateRequest request) {
-        TicketEntity ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
+        @Override
+        public TicketResponse updateStatus(Long ticketId, TicketAdminUpdateRequest request) {
+                TicketEntity ticket = ticketRepository.findById(ticketId)
+                                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
 
-        // Update the ticket status
-        ticket.setStatusId(request.getStatusId());
+                if (request == null || request.getStatusId() == null ) {
+                        throw new RuntimeException("Response content cannot be null or empty");
+                }
+                // Update the ticket status
+                ticket.setStatusId(request.getStatusId());
 
-        TicketEntity updatedTicket = ticketRepository.save(ticket);
+                TicketEntity updatedTicket = ticketRepository.save(ticket);
 
-        return TicketResponse.builder()
-                .id(updatedTicket.getId())
-                .title(updatedTicket.getTitle())
-                .description(updatedTicket.getDescription())
-                .statusId(updatedTicket.getStatusId())
-                .priorityId(updatedTicket.getPriorityId())
-                .tagId(updatedTicket.getTagId())
-                .createdBy(updatedTicket.getCreatedBy())
-                .userId(updatedTicket.getUserId())
-                .response(updatedTicket.getResponse()) // Assuming response field exists
-                .build();
-    }
+                return TicketResponse.builder()
+                                .id(updatedTicket.getId())
+                                .title(updatedTicket.getTitle())
+                                .description(updatedTicket.getDescription())
+                                .statusId(updatedTicket.getStatusId())
+                                .priorityId(updatedTicket.getPriorityId())
+                                .tagId(updatedTicket.getTagId())
+                                .createdBy(updatedTicket.getCreatedBy())
+                                .userId(updatedTicket.getUserId())
+                                .response(updatedTicket.getResponse()) // Assuming response field exists
+                                .build();
+        }
 
-    @Override
-    public TicketResponse updateTag(Long ticketId, TicketAdminUpdateRequest request) {
-        TicketEntity ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
+        @Override
+        public TicketResponse updateTag(Long ticketId, TicketAdminUpdateRequest request) {
+                TicketEntity ticket = ticketRepository.findById(ticketId)
+                                .orElseThrow(() -> new RuntimeException("Ticket not found with id: " + ticketId));
 
-        // Update the ticket tag
-        ticket.setTagId(request.getTagId());
+                if (request == null || request.getTagId() == null ) {
+                        throw new RuntimeException("Response content cannot be null or empty");
+                }
+                // Update the ticket tag
+                ticket.setTagId(request.getTagId());
 
-        TicketEntity updatedTicket = ticketRepository.save(ticket);
+                TicketEntity updatedTicket = ticketRepository.save(ticket);
 
-        return TicketResponse.builder()
-                .id(updatedTicket.getId())
-                .title(updatedTicket.getTitle())
-                .description(updatedTicket.getDescription())
-                .statusId(updatedTicket.getStatusId())
-                .priorityId(updatedTicket.getPriorityId())
-                .tagId(updatedTicket.getTagId())
-                .createdBy(updatedTicket.getCreatedBy())
-                .userId(updatedTicket.getUserId())
-                .response(updatedTicket.getResponse()) // Assuming response field exists
-                .build();
-    }
-    
+                return TicketResponse.builder()
+                                .id(updatedTicket.getId())
+                                .title(updatedTicket.getTitle())
+                                .description(updatedTicket.getDescription())
+                                .statusId(updatedTicket.getStatusId())
+                                .priorityId(updatedTicket.getPriorityId())
+                                .tagId(updatedTicket.getTagId())
+                                .createdBy(updatedTicket.getCreatedBy())
+                                .userId(updatedTicket.getUserId())
+                                .response(updatedTicket.getResponse()) // Assuming response field exists
+                                .build();
+        }
+
 }
