@@ -3,7 +3,8 @@ package com.project.controller.impl;
 
 import com.project.controller.IUserController;
 import com.project.model.User;
-import com.project.repository.UserRepository;
+import com.project.service.impl.UserService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,12 +15,10 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController implements IUserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @GetMapping("/profile")
     public User getProfile(@AuthenticationPrincipal UserDetails userDetails) {
-        // userDetails.getUsername() genellikle email olur
-        return userRepository.findByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        return userService.getProfile(userDetails.getUsername());
     }
 }
