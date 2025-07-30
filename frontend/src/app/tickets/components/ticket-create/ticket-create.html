@@ -26,16 +26,13 @@
       Description must be at least 10 characters.
     </div>
   </div>
-
-  <div>
+<div>
     <label for="tagId">Category (Tag)</label>
     <select id="tagId" formControlName="tagId">
-      <option [value]="null">Select</option>
-      <option *ngFor="let tag of tags" [value]="tag.id">{{ tag.name }}</option>
+      <option [ngValue]="null">Select</option>
+      <option *ngFor="let tag of tagOptions" [ngValue]="tag.id">{{ tag.name }}</option>
     </select>
-    <div
-      *ngIf="ticketForm.get('tagId')?.touched && ticketForm.get('tagId')?.invalid"
-    >
+    <div *ngIf="ticketForm.get('tagId')?.touched && ticketForm.get('tagId')?.invalid">
       Category selection is required.
     </div>
   </div>
@@ -43,12 +40,10 @@
   <div>
     <label for="priorityId">Priority</label>
     <select id="priorityId" formControlName="priorityId">
-      <option [value]="null">Select</option>
-      <option *ngFor="let p of priorities" [value]="p.id">{{ p.label }}</option>
+      <option [ngValue]="null">Select</option>
+      <option *ngFor="let p of priorityOptions" [ngValue]="p.id">{{ p.name }}</option>
     </select>
-    <div
-      *ngIf="ticketForm.get('priorityId')?.touched && ticketForm.get('priorityId')?.invalid"
-    >
+    <div *ngIf="ticketForm.get('priorityId')?.touched && ticketForm.get('priorityId')?.invalid">
       Priority selection is required.
     </div>
   </div>
@@ -56,15 +51,14 @@
   <div>
     <label for="statusId">Status</label>
     <select id="statusId" formControlName="statusId">
-      <option [value]="null">Select</option>
-      <option *ngFor="let p of status" [value]="p.id">{{ p.label }}</option>
+      <option [ngValue]="null">Select</option>
+      <option *ngFor="let s of statusOptions" [ngValue]="s.id">{{ s.name }}</option>
     </select>
-    <div
-      *ngIf="ticketForm.get('statusId')?.touched && ticketForm.get('statusId')?.invalid"
-    >
+    <div *ngIf="ticketForm.get('statusId')?.touched && ticketForm.get('statusId')?.invalid">
       Status selection is required.
     </div>
   </div>
+
 
   <div *ngIf="showSuccessMessage" class="success-message">
     🎉 Ticket created successfully!

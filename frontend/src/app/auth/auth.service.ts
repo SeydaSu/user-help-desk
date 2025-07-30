@@ -23,6 +23,19 @@ export class AuthService {
     );
   }
 
+  login_admin(data: { email: string; password: string }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/admin/login`, data).pipe(
+      tap(res => {
+        if (res.token) {
+          localStorage.setItem('token', res.token);
+        }
+        if (res.role) {
+          localStorage.setItem('role', res.role);
+        }
+      })
+    );
+  }
+
   register(data: { email: string; username: string; password: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, data);
   }
