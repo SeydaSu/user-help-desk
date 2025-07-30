@@ -41,6 +41,7 @@ eureka:
     prefer-ip-address: true
     instance-id: ${spring.application.name}:${random.value}
 
+
 springdoc:
   swagger-ui:
     path: /swagger-ui/index.html

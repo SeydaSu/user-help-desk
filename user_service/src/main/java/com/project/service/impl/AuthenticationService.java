@@ -3,7 +3,6 @@ package com.project.service.impl;
 
 import java.time.LocalDateTime;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,11 +34,6 @@ public class AuthenticationService implements IAuthenticationService {
 
 
     public AuthenticationResponse register(RegisterRequest request) {
-
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new BadCredentialsException("This email address is already in use.");
-        }
-
         var user = User.builder()
                 .name(request.getUsername())
                 .email(request.getEmail())
@@ -47,11 +41,7 @@ public class AuthenticationService implements IAuthenticationService {
                 .role(request.getRole())
                 .build();
 
-        try {
         userRepository.save(user);
-        } catch (DataIntegrityViolationException e) {
-            throw new BadCredentialsException("This email address is already in use.");
-        }
         // Kafka event JSON oluştur
         String eventJson = """
             {
@@ -70,101 +60,50 @@ public class AuthenticationService implements IAuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .userId(user.getId().longValue())
-                .role(user.getRole())
                 .build();
     
     
     }
 
-   
-    // User login - sadece USER rolündeki kullanıcılar
-    public AuthenticationResponse loginUser(AuthenticationRequest request) {
-        // Kullanıcıyı bul
-        var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("Kullanıcı bulunamadı."));
-
-        // Role kontrolü - USER olmalı
-        if (!user.getRole().equals(Role.USER)) {
-            throw new BadCredentialsException("Bu panele sadece kullanıcılar giriş yapabilir.");
-        }
-
-        // Authentication işlemi
-        try {
-            authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                    request.getEmail(),
-                    request.getPassword()
-                )
-            );
-        } catch (BadCredentialsException e) {
-            throw new BadCredentialsException("Hatalı email veya şifre girdiniz.");
-        }
-
-        // Kafka event - User login
-        String eventJson = """
-            {
-                "userId": "%s",
-                "email": "%s",
-                "role": "USER",
-                "eventType": "USER_LOGGED_IN",
-                "timestamp": "%s"
-            }
-        """.formatted(user.getId(), user.getEmail(), LocalDateTime.now());
-
-        kafkaProducerService.sendUserLoginEvent(eventJson);
-
-        // JWT token oluştur ve response döndür
-        var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .userId(user.getId().longValue())
-                .role(user.getRole())
-                .build();
+    public AuthenticationResponse login(AuthenticationRequest request) {
+    try {
+        authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                request.getEmail(),
+                request.getPassword()
+            )
+        );
+    } catch (BadCredentialsException e) {
+        throw new BadCredentialsException("Hatalı şifre girdiniz.");
+    } catch (UsernameNotFoundException e) {
+        throw new UsernameNotFoundException("Kullanıcı bulunamadı.");
     }
 
-    // Admin login - sadece ADMIN rolündeki kullanıcılar
-    public AuthenticationResponse loginAdmin(AuthenticationRequest request) {
-        // Kullanıcıyı bul
-        var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("Admin kullanıcısı bulunamadı."));
+    var user = userRepository.findByEmail(request.getEmail())
+            .orElseThrow(() -> new UsernameNotFoundException("Kullanıcı bulunamadı."));
 
-        // Role kontrolü - ADMIN olmalı
-        if (!user.getRole().equals(Role.ADMIN)) {
-            throw new BadCredentialsException("Bu panele sadece adminler giriş yapabilir.");
+
+     // Kafka event JSON oluştur
+    String eventJson = """
+        {
+            "userId": "%s",
+            "email": "%s",
+            "eventType": "USER_LOGGED_IN",
+            "timestamp": "%s"
         }
+    """.formatted(user.getId(), user.getEmail(), LocalDateTime.now());
 
-        // Authentication işlemi
-        try {
-            authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                    request.getEmail(),
-                    request.getPassword()
-                )
-            );
-        } catch (BadCredentialsException e) {
-            throw new BadCredentialsException("Hatalı admin email veya şifre girdiniz.");
-        }
+    // Kafka'ya event gönder
+    kafkaProducerService.sendUserLoginEvent(eventJson);
 
-        // Kafka event - Admin login
-        String eventJson = """
-            {
-                "userId": "%s",
-                "email": "%s",
-                "role": "ADMIN",
-                "eventType": "ADMIN_LOGGED_IN",
-                "timestamp": "%s"
-            }
-        """.formatted(user.getId(), user.getEmail(), LocalDateTime.now());
-
-        kafkaProducerService.sendUserLoginEvent(eventJson);
-
-        // JWT token oluştur ve response döndür
-        var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .userId(user.getId().longValue())
-                .role(user.getRole())
-                .build();
+    
+    var jwtToken = jwtService.generateToken(user);
+    return AuthenticationResponse.builder()
+            .token(jwtToken)
+            .userId(user.getId().longValue())
+            .build();
+    
+    
     }
 
 
