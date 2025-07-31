@@ -24,7 +24,8 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults())  // CORS'u aktif et
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.OPTIONS,"/**","/swagger-ui/**", "/v3/api-docs/**").permitAll() // Preflight izin ver
+                .requestMatchers("/api/v1/auth/**","/api/v1/admin/**","/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()// Preflight izin ver
                 .anyRequest().authenticated()
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

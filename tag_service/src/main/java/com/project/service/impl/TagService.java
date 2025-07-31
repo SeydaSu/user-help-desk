@@ -32,7 +32,7 @@ public class TagService implements ITagService {
         }
 
         // Eğer name boşsa veya zaten varsa, hata fırlat
-        if (request.getName() == null || request.getName().isBlank()) {
+        if (request == null ||request.getName() == null || request.getName().isBlank()) {
             throw new TagNotFoundException("Tag name cannot be empty");
         }
 
