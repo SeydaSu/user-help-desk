@@ -2,20 +2,32 @@ package com.admin.service;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.admin.client.TagEntity;
+import com.admin.dto.PriorityRequest;
+import com.admin.dto.PriorityResponse;
+import com.admin.dto.StatusRequest;
+import com.admin.dto.StatusResponse;
+import com.admin.dto.TagRequest;
+import com.admin.dto.TagResponse;
+import com.admin.model.PriorityEntity;
+import com.admin.model.StatusEntity;
+
 public interface IAdminTicketAssignService {
 
 
-    // public ResponseEntity<List<PriorityResponse>> getAllPriorities();
+    public List<PriorityEntity> getAllPriorities();
 
-    // public ResponseEntity<PriorityResponse> createPriority(@RequestBody CreatePriorityRequest request);
+    public PriorityResponse createPriority(@RequestBody PriorityRequest request);
 
-    // public ResponseEntity<List<TagResponse>> getAllTags();
+    public List<TagEntity> getAllTags();
 
-    // public ResponseEntity<TagResponse> createTag(@RequestBody CreateTagRequest request);
+    public TagResponse createTag(@RequestBody TagRequest request);
 
-    // public ResponseEntity<List<StatusResponse>> getAllStatuses();
+    public List<StatusEntity> getAllStatuses();
 
-    // public ResponseEntity<StatusResponse> createStatus(@RequestBody CreateStatusRequest request);
+    public StatusResponse createStatus(@RequestBody StatusRequest request);
 
 
     
