@@ -6,7 +6,7 @@ spring:
     name: ticket-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/helpdesk
+    url: jdbc:postgresql://localhost:5433/helpdesk
     username: postgres
     password: seydas
     driver-class-name: org.postgresql.Driver
