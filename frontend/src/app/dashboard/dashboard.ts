@@ -7,7 +7,7 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { LeftSidebarComponent } from '../left-sidebar/left-sidebar.component';
 
 import { HomeComponent } from '../home/home';
@@ -16,14 +16,42 @@ import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterOutlet, CommonModule, LeftSidebarComponent],
+  imports: [ CommonModule, LeftSidebarComponent,RouterModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
 export class Dashboard implements OnInit {
   user: any;
 
-  constructor(private authService: AuthService) {
+  items = [
+    {
+      routerLink: '/dashboard',
+      icon: 'fal fa-home',
+      label: 'Dashboard'
+    }
+    , {
+      routerLink: '/ticket',
+      icon: 'fal fa-ticket-alt',
+      label: 'Create Ticket'
+    }, {
+      routerLink: '/tickets',
+      icon: 'fal fa-ticket-alt',
+      label: 'Tickets'
+    }, {
+      routerLink: '/users',
+      icon: 'fal fa-users',
+      label: 'Profile'
+    }, {
+      routerLink: '/settings',
+      icon: 'fal fa-cog',
+      label: 'Settings'
+    }
+
+  ];
+  
+  
+
+  constructor(private authService: AuthService,private router: Router) {
 
     console.log(this.user?.name); 
 
