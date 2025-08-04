@@ -3,8 +3,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil, switchMap } from 'rxjs/operators';
-import { Ticket } from '../../store/ticket.model';
 import { TicketFacade } from '../../store/ticket.facade';
+import { Ticket } from '../../../models/ticket.model';
 
 @Component({
   selector: 'app-ticket-detail',

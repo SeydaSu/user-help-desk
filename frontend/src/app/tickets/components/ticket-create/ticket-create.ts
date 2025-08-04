@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TicketFacade } from '../../store/ticket.facade';
-import { Tag, PriorityResponse, StatusResponse } from '../../store/ticket.model';
 import { CommonModule } from '@angular/common';
+import { PriorityResponse } from '../../../models/priority.model';
+import { StatusResponse } from '../../../models/status.model';
+import { Tag, TagResponse } from '../../../models/tag.model';
 
 @Component({
   selector: 'app-ticket-create',
@@ -17,7 +19,7 @@ export class TicketCreateComponent implements OnInit {
 
   priorityOptions: PriorityResponse[] = [];
   statusOptions: StatusResponse[] = [];
-  tagOptions: Tag[] = [];
+  tagOptions: TagResponse[] = [];
 
   showSuccessMessage = false;
 
@@ -38,6 +40,7 @@ export class TicketCreateComponent implements OnInit {
 
     // Admin panelinden gelen dinamik seçenekleri al
     this.ticketFacade.getAllPriorities().subscribe(priorities => {
+      console.log('Gelen priority verisi:', priorities); 
       this.priorityOptions = priorities;
     });
 
@@ -46,8 +49,10 @@ export class TicketCreateComponent implements OnInit {
     });
 
     this.ticketFacade.getAllTags().subscribe(tags => {
-      this.tagOptions = tags;
+       this.tagOptions = tags;
+      
     });
+    
   }
 
   onSubmit() {

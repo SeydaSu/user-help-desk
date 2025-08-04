@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PriorityResponse, StatusResponse, Tag, Ticket } from './ticket.model';
+import { Ticket, TicketRequest, TicketResponse } from '../../models/ticket.model';
+import { PriorityResponse } from '../../models/priority.model';
+import { StatusResponse } from '../../models/status.model';
+import { Tag, TagResponse } from '../../models/tag.model';
+
 
 @Injectable({ providedIn: 'root' })
 export class TicketRepository {
   private apiUrl = 'http://localhost:8082/api/v1/ticket';
-  private adminServiceUrl = 'http://localhost:8085/api/v1';  // priority ve status için
+  private adminServiceUrl = 'http://localhost:8085/api/v1/admin/ticket';  // priority ve status için
   private tagServiceUrl = 'http://localhost:8084/api/v1/tags';  // tag için
 
   constructor(private http: HttpClient) {}
@@ -19,12 +23,12 @@ export class TicketRepository {
     return this.http.get<Ticket>(`${this.apiUrl}/${id}`);
   }
 
-  createTicket(ticket: Partial<Ticket>): Observable<Ticket> {
-    return this.http.post<Ticket>(this.apiUrl, ticket);
+  createTicket(ticket: TicketRequest): Observable<TicketResponse> {
+    return this.http.post<TicketResponse>(this.apiUrl, ticket);
   }
 
-  updateTicket(id: number, ticket: Partial<Ticket>): Observable<Ticket> {
-    return this.http.put<Ticket>(`${this.apiUrl}/${id}`, ticket);
+  updateTicket(id: number, ticket: TicketRequest): Observable<TicketResponse> {
+    return this.http.put<TicketResponse>(`${this.apiUrl}/${id}`, ticket);
   }
 
   getAllPriorities(): Observable<PriorityResponse[]> {
@@ -35,7 +39,7 @@ export class TicketRepository {
     return this.http.get<StatusResponse[]>(`${this.adminServiceUrl}/statuses`);
   }
 
-  getAllTags(): Observable<Tag[]> {
-    return this.http.get<Tag[]>(this.tagServiceUrl);
+  getAllTags(): Observable<TagResponse[]> {
+    return this.http.get<TagResponse[]>(`${this.adminServiceUrl}/tags`);
   }
 }

@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Ticket } from '../../store/ticket.model';
 import { Router } from '@angular/router';
 import { TicketFacade } from '../../store/ticket.facade';
+import { Ticket } from '../../../models/ticket.model';
+
 
 @Component({
   selector: 'app-ticket-list',
@@ -52,7 +53,6 @@ export class TicketListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Test verileri için - backend bağlantısı kurulduğunda kaldırılacak
     this.ticketFacade.setTickets(this.testTickets);
   }
 
@@ -61,7 +61,6 @@ export class TicketListComponent implements OnInit {
   }
 
   refreshTickets(): void {
-    // Test verileri için
     this.ticketFacade.setTickets(this.testTickets);
   }
 }
