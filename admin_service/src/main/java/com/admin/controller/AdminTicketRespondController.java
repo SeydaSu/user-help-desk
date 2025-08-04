@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.admin.dto.TicketAdminUpdateRequest;
 import com.admin.dto.TicketResponse;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/v1/admin/ticket")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequiredArgsConstructor
 public class AdminTicketRespondController {
 
