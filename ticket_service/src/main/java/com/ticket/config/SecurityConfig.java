@@ -24,7 +24,9 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults())  // CORS'u aktif et
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.OPTIONS, "/api/v1/ticket","/**","/swagger-ui/**", "/v3/api-docs/**").permitAll() // Preflight izin ver
+                .requestMatchers("/api/v1/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/api/v1/ticket/**","/api/v1/ticket").authenticated() // Artık JWT gerekli!
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()// Preflight izin ver
                 .anyRequest().authenticated()
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
