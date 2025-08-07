@@ -1,0 +1,13 @@
+.add-status {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.add-status ul.list-group {
+  margin-top: 10px;
+}
+
+.add-status .spinner-border {
+  width: 2rem;
+  height: 2rem;
+}

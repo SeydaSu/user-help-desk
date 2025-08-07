@@ -7,6 +7,10 @@ import { TicketCreateComponent } from './tickets/components/ticket-create/ticket
 import { TicketListComponent } from './tickets/components/ticket-list/ticket-list';
 import {  TicketDetailComponent } from './tickets/components/ticket-detail/ticket-detail';
 import { LoginAdminComponent } from './auth/login-admin/login-admin';
+import { AdminDashboard } from './admin/components/admin-dashboard/admin-dashboard';
+import { AddTags } from './admin/components/add-tags/add-tags';
+import { AddPriorities } from './admin/components/add-priorities/add-priorities';
+import { AddStatuses } from './admin/components/add-statuses/add-statuses';
 
 
 export const routes: Routes = [
@@ -15,10 +19,14 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'dashboard', component: Dashboard }, 
+  { path: 'admin-dashboard', component: AdminDashboard},
   { path: 'ticket', component: TicketCreateComponent},
   { path: 'tickets', component: TicketListComponent},
   { path: 'ticket/:id', component: TicketDetailComponent },
   { path: 'admin_login', component: LoginAdminComponent},
+  { path: 'add-tags', component: AddTags},
+  { path: 'add-priorities', component: AddPriorities},
+  { path: 'add-statuses', component: AddStatuses},
 
   { path: '**', redirectTo: '' }
 ];
