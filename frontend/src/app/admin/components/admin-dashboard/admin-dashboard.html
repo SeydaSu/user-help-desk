@@ -1,1 +1,46 @@
-<p>admin-dashboard works!</p>
+<div class="dashboard-container">
+  
+  <app-left-sidebar
+    [isLeftSideBarCollapsed]="isLeftSideBarCollapsed()"
+    (changeIsLeftSideBarCollapsed)="changeIsLeftSideBarCollapsed($event)"
+  >
+  <div class="sidenav-nav">
+    @for(item of items; track $index){
+      <li class="sidenav-nav-item">
+        <a
+          class="sidenav-nav-link"
+          [routerLink]="item.routerLink"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: true}"
+        >
+          <i class="sidenav-link-icon" [class]="item.icon"></i>
+          @if(!isLeftSideBarCollapsed()) {
+            <span class="sidenav-link-text">{{ item.label }}</span>
+          }
+        </a>
+      </li>
+    }
+  </div></app-left-sidebar>
+
+  <div class = "body">
+    <router-outlet></router-outlet>
+  </div>
+ 
+  <div class="main-content-area" [ngClass]="sizeClass()">
+    <router-outlet></router-outlet>
+  </div>
+  <header class="dashboard-header">
+   
+      
+      <div class="text-right">
+        <div class="font-semibold text-sm text-gray-800"></div>
+        <button type="button" 
+                    class="btn btn-success" 
+          (click)="logout()"
+        >
+          Logout
+        </button>
+      </div>
+    
+  </header>
+</div>

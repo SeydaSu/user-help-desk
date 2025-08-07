@@ -40,6 +40,7 @@ export interface TicketResponse {
   status?: StatusResponse;
   tag?: Tag;
 
+
   createdAt: string;
   updatedAt?: string;
   createdBy: string;
@@ -61,6 +62,7 @@ export interface TicketRequest {
   status?: StatusResponse;
   tag?: Tag;
 
+ 
   userId: number;
 
 

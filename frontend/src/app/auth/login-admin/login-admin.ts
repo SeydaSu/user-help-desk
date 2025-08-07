@@ -41,7 +41,7 @@ export class LoginAdminComponent {
       next: (response) => {
         console.log('Login başarılı:', response);
         this.isLoading = false;
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/admin-dashboard']);
       },
       error: (error) => {
         this.isLoading = false;

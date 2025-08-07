@@ -11,17 +11,20 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(data: { email: string; password: string }): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, data).pipe(
-      tap(res => {
-        if (res.token) {
-          localStorage.setItem('token', res.token);
-        }
-        if (res.role) {
-          localStorage.setItem('role', res.role);
-        }
-      })
-    );
-  }
+  return this.http.post<any>(`${this.apiUrl}/login`, data).pipe(
+    tap(res => {
+      if (res.token) {
+        localStorage.setItem('token', res.token);
+      }
+      if (res.role) {
+        localStorage.setItem('role', res.role);
+      }
+      if (res.userId !== undefined) {
+        localStorage.setItem('userId', res.userId.toString());
+      }
+    })
+  );
+}
 
   login_admin(data: { email: string; password: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/admin/login`, data).pipe(
@@ -54,12 +57,22 @@ getToken(): string | null {
   return null;
 }
 
+
 getRole(): string {
   if (typeof window !== 'undefined') {
     return localStorage.getItem('role') || '';
   }
   return '';
 }
+
+getUserId(): number | null {
+  const decoded = this.decodeToken();
+  if (decoded && decoded.userId) {
+    return decoded.userId;
+  }
+  return null;
+}
+
 
 decodeToken(): any {
   const token = localStorage.getItem('token');

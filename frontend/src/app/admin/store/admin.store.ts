@@ -1,28 +1,33 @@
 import { Injectable } from '@angular/core';
 import { createStore, withProps } from '@ngneat/elf';
-import { Status } from '../../models/status.model';
+import {
+  EntitiesState,
+  withEntities,
+  withActiveId,
+} from '@ngneat/elf-entities';
+import { Ticket } from '../../models/ticket.model';
 import { Priority } from '../../models/priority.model';
+import { Status } from '../../models/status.model';
 import { Tag } from '../../models/tag.model';
 
 export interface AdminState {
-  statuses: Status[];
   priorities: Priority[];
+  statuses: Status[];
   tags: Tag[];
 }
 
-const initialState: AdminState = {
-  statuses: [],
-  priorities: [],
-  tags: []
-};
-
 export const adminStore = createStore(
   { name: 'admin' },
-  withProps<AdminState>(initialState)
+  withEntities<Ticket>(),
+  withActiveId(),
+  withProps<AdminState>({
+    priorities: [],
+    statuses: [],
+    tags: [],
+  })
 );
 
-
 @Injectable({ providedIn: 'root' })
-export class TicketStoreService {
+export class AdminStoreService {
   store = adminStore;
 }
