@@ -1,0 +1,13 @@
+.add-priority {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.add-priority ul.list-group {
+  margin-top: 10px;
+}
+
+.add-priority .spinner-border {
+  width: 2rem;
+  height: 2rem;
+}
