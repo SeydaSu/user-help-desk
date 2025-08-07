@@ -1,0 +1,65 @@
+<div class="add-tag card p-4">
+  <h4>Add New Tag</h4>
+
+  <form [formGroup]="tagForm" (ngSubmit)="onSubmit()" class="mb-4">
+    <div class="mb-3">
+      <label for="name" class="form-label">Tag Name</label>
+      <input
+        id="name"
+        type="text"
+        class="form-control"
+        formControlName="name"
+        [class.is-invalid]="tagForm.get('name')?.invalid && tagForm.get('name')?.touched"
+        placeholder="Enter the tag name..."
+      />
+      <div class="invalid-feedback" *ngIf="tagForm.get('name')?.invalid && tagForm.get('name')?.touched">
+        <div *ngIf="tagForm.get('name')?.errors?.['required']">
+          The tag name is required.
+        </div>
+        <div *ngIf="tagForm.get('name')?.errors?.['minlength']">
+          Tag name must be at least 2 characters.
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-success" type="submit" [disabled]="tagForm.invalid">
+      <i class="fas fa-plus me-2"></i>Add
+    </button>
+  </form>
+
+  <hr />
+
+  <h5>Available Tags</h5>
+
+  <div *ngIf="tags$ | async as tags; else noTags">
+    <div *ngIf="tags.length > 0; else emptyTags">
+      <ul class="list-group">
+        <li
+          class="list-group-item d-flex justify-content-between align-items-center"
+          *ngFor="let tag of tags"
+        >
+          <span>
+            <i class="fas fa-tag me-2 text-primary"></i>
+            {{ tag.name }}
+          </span>
+          <span class="badge bg-secondary rounded-pill">{{ tag.id }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <ng-template #emptyTags>
+      <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i>
+        There are no tags yet.
+      </div>
+    </ng-template>
+  </div>
+
+  <ng-template #noTags>
+    <div class="d-flex justify-content-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </ng-template>
+</div>

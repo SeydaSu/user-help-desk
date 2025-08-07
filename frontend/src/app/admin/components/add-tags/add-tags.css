@@ -1,0 +1,13 @@
+.add-tag {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.add-tag ul.list-group {
+  margin-top: 10px;
+}
+
+.add-tag .spinner-border {
+  width: 2rem;
+  height: 2rem;
+}
