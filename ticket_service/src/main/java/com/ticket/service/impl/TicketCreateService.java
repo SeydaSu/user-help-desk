@@ -1,27 +1,21 @@
 package com.ticket.service.impl;
 
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.ticket.client.AdminClient;
-import com.ticket.client.PriorityEntity;
-import com.ticket.client.StatusEntity;
+import jakarta.servlet.http.HttpServletRequest;
+
 import com.ticket.client.TagClient;
-import com.ticket.dto.PriorityResponse;
-import com.ticket.dto.StatusResponse;
-import com.ticket.dto.TagResponse;
+import com.ticket.config.JwtAuthenticationToken;
+import com.ticket.config.JwtService;
 import com.ticket.dto.TicketRequest;
 import com.ticket.dto.TicketResponse;
-import com.ticket.exception.TagNotFoundException;
 import com.ticket.model.TicketEntity;
 import com.ticket.repository.TicketRepository;
 import com.ticket.service.ITicketCreateService;
-
-import org.springframework.security.core.context.SecurityContextHolder;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,44 +23,30 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TicketCreateService implements ITicketCreateService {
 
-    @Autowired
-    private final TagClient tagClient; // feign client
-
-    @Autowired
-    private final AdminClient adminClient;
-    
-    @Autowired
+    private final TagClient tagClient;
     private final TicketRepository ticketRepository;
+    private final JwtService jwtService;
 
     @Override
     public TicketResponse createTicket(TicketRequest request) {
-        String createdBy = "unknown";
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            createdBy = authentication.getName();
+        if (request.getTitle() == null || request.getTitle().isBlank() ||
+                request.getDescription() == null || request.getDescription().isBlank()) {
+            throw new RuntimeException("Title and Description cannot be null or empty");
         }
 
-        // 1. Tag var mı kontrol et
-        TagResponse tag = tagClient.getTagById(request.getTagId());
+        UserInfo currentUser = getCurrentUserInfo();
 
-        // 2. Eğer tag null veya exception fırlatırsa burada try-catch ile handle
-        if (tag == null) {
-            throw new TagNotFoundException("Geçersiz tag ID: " + request.getTagId());
-        }
+        System.out.println("Creating ticket with user: " + currentUser.getId() + " - " + currentUser.getName());
 
-        List<StatusEntity> status = adminClient.getAllStatuses();
-        List<PriorityEntity> priority = adminClient.getAllPriorities();
-
-        // 3. Ticket oluştur
         TicketEntity ticket = TicketEntity.builder()
-            .title(request.getTitle())
-            .description(request.getDescription())
-            .tagId(tag.getId()) // valid olduğu teyit edildi
-            .createdBy(createdBy) // JWT'den alınır
-            .statusId(status.get(0).getId()) // valid olduğu teyit edildi
-            .priorityId(priority.get(0).getId()) 
-            .userId(request.getUserId()) 
-            .build();
+                .title(request.getTitle())
+                .description(request.getDescription())
+                .tagId(request.getTagId())
+                .createdBy(currentUser.getName())
+                .statusId(request.getStatusId())
+                .priorityId(request.getPriorityId())
+                .userId(currentUser.getId())
+                .build();
 
         ticketRepository.save(ticket);
 
@@ -78,14 +58,62 @@ public class TicketCreateService implements ITicketCreateService {
                 .statusId(ticket.getStatusId())
                 .priorityId(ticket.getPriorityId())
                 .userId(ticket.getUserId())
-                .createdBy(getCurrentUserId())
+                .createdBy(currentUser.getName())
                 .createdAt(ticket.getCreatedAt())
                 .build();
     }
 
+    private UserInfo getCurrentUserInfo() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+        if (auth instanceof JwtAuthenticationToken jwtAuth) {
+            Long userId = Long.parseLong(jwtAuth.getUserId());
+            String userName = jwtAuth.getUserName();
 
-    private String getCurrentUserId() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+            return new UserInfo(userId, userName);
+        }
+
+        return new UserInfo(-1L, "Anonymous");
+    }
+
+    private String getCurrentJwtToken() {
+        try {
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                    .getRequest();
+            String authHeader = request.getHeader("Authorization");
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                return authHeader.substring(7);
+            }
+        } catch (Exception e) {
+            System.out.println("Could not get JWT token from request: " + e.getMessage());
+        }
+        return null;
+    }
+
+    private Long parseUserId(String userIdStr) {
+        try {
+            return Long.parseLong(userIdStr);
+        } catch (NumberFormatException e) {
+            System.out.println("Failed to parse userId: " + userIdStr);
+            return null;
+        }
+    }
+
+    public static class UserInfo {
+        private final Long id;
+        private final String name;
+
+        public UserInfo(Long id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 }

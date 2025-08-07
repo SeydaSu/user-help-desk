@@ -31,7 +31,7 @@ public class User implements UserDetails {
 
     @Id 
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String name;
 

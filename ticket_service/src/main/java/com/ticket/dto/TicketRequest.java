@@ -19,7 +19,7 @@ public class TicketRequest {
     private String description;
 
     
-    private Long priority;
+    private Long priorityId;
 
     private Long statusId;
 

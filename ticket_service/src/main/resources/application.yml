@@ -1,9 +1,15 @@
 server:
   port: 8082
   
+jwt:
+  secret: ed1c5a96c0a150f3b3fae7e897c2eca18fe507e3b614a18bc81a21926a2c893c
+  
 spring:
   application:
     name: ticket-service
+
+
+
 
   datasource:
     url: jdbc:postgresql://localhost:5433/helpdesk
@@ -48,3 +54,8 @@ springdoc:
   api-docs:
     path: /v3/api-docs
 
+
+logging:
+  level:
+    com.ticket.client: DEBUG
+    feign: DEBUG
