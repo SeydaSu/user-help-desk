@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Ticket, TicketRequest, TicketResponse } from '../../models/ticket.model';
 import { PriorityResponse } from '../../models/priority.model';
@@ -15,20 +15,30 @@ export class TicketRepository {
 
   constructor(private http: HttpClient) {}
 
-  getTickets(): Observable<Ticket[]> {
-    return this.http.get<Ticket[]>(this.apiUrl);
-  }
+  getMyTickets(): Observable<Ticket[]> {
+  const token = localStorage.getItem('token') || '';
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+
+  return this.http.get<Ticket[]>(`${this.apiUrl}/my`, { headers });
+}
 
   getTicket(id: number): Observable<Ticket> {
     return this.http.get<Ticket>(`${this.apiUrl}/${id}`);
   }
 
   createTicket(ticket: TicketRequest): Observable<TicketResponse> {
-    return this.http.post<TicketResponse>(this.apiUrl, ticket);
-  }
+  const token = localStorage.getItem('token') || '';
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+
+  return this.http.post<TicketResponse>(this.apiUrl, ticket, { headers });
+}
 
   updateTicket(id: number, ticket: TicketRequest): Observable<TicketResponse> {
-    return this.http.put<TicketResponse>(`${this.apiUrl}/${id}`, ticket);
+    return this.http.post<TicketResponse>(`${this.apiUrl}/update/${id}`, ticket);
   }
 
   getAllPriorities(): Observable<PriorityResponse[]> {

@@ -31,7 +31,7 @@ export class AdminDashboard {
         label: 'Admin Dashboard'
       }
       , {
-        routerLink: '/tickets',
+        routerLink: '/admin-ticket-list',
         icon: 'fal fa-ticket-alt',
         label: 'Tickets'
       }, {

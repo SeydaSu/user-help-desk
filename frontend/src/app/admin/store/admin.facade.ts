@@ -32,6 +32,10 @@ export class AdminFacade {
     this.service.loadTags();
   }
 
+  getAllTickets() {
+    return this.service.loadTickets();
+  }
+
   getTicketById(id: number) {
     return this.service.getTicketById(id);
   }
