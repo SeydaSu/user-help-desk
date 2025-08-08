@@ -30,14 +30,28 @@ export class TicketDetailComponent implements OnInit, OnDestroy {
     this.ticket$ = this.ticketFacade.activeTicket$;
   }
 
-  ngOnInit(): void {
+  tagsMap = new Map<number, string>();
+  prioritiesMap = new Map<number, string>();
+  statusesMap = new Map<number, string>();
+
+  ngOnInit(): void { 
+    this.ticketFacade.getAllTags().subscribe(tags =>{
+      tags.forEach(tag => this.tagsMap.set(tag.id, tag.name));
+    })
+    this.ticketFacade.getAllPriorities().subscribe(priorities =>{
+      priorities.forEach(priority => this.prioritiesMap.set(priority.id, priority.name));
+    })
+    this.ticketFacade.getAllStatuses().subscribe(statuses =>{
+      statuses.forEach(status => this.statusesMap.set(status.id, status.name));
+    })
+
     this.route.paramMap
       .pipe(
         switchMap(params => {
           const id = Number(params.get('id'));
           if (id) {
             this.ticketFacade.setActiveTicket(id);
-            this.ticketFacade.loadTickets();
+            this.ticketFacade.loadMyTickets();
           }
           return this.ticket$;
         }),
@@ -56,61 +70,9 @@ export class TicketDetailComponent implements OnInit, OnDestroy {
   }
 
   editTicket(ticket: Ticket): void {
-    this.router.navigate(['/ticket', ticket.id, 'edit']);
+    this.router.navigate(['/ticket/update', ticket.id]);
   }
 
-  getStatusClass(status: number): string {
-    switch (status) {
-      case 1:
-        return 'status-open';
-      case 2:
-        return 'status-in-progress';
-      case 3:
-        return 'status-closed';
-      case 4:
-        return 'status-resolved';
-      default:
-        return 'status-default';
-    }
-  }
+  
 
-  getPriorityClass(priorityId: number): string {
-    switch (priorityId) {
-      case 1:
-        return 'priority-low';
-      case 2:
-        return 'priority-medium';
-      case 3:
-        return 'priority-high';
-      case 4:
-        return 'priority-critical';
-      default:
-        return 'priority-medium';
-    }
-  }
-
-  getPriorityText(priorityId: number): string {
-    switch (priorityId) {
-      case 1:
-        return 'Düşük';
-      case 2:
-        return 'Orta';
-      case 3:
-        return 'Yüksek';
-      case 4:
-        return 'Kritik';
-      default:
-        return 'Orta';
-    }
-  }
-
-  formatDate(dateString: string): string {
-    return new Date(dateString).toLocaleDateString('tr-TR', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  }
 }

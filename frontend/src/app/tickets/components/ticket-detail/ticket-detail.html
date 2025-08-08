@@ -12,30 +12,34 @@
       <div class="ticket-description">
         <p>{{ ticket.description }}</p>
       </div>
+
+      <div class="ticket-description">
+        <p>{{ ticket.response }}</p>
+      </div>
  
       <div class="ticket-meta">
         <div class="meta-row">
           <span class="meta-label">Tag:</span>
-          <span class="meta-value">{{ ticket.tagId }}</span>
+          <span class="meta-value">{{ tagsMap.get(ticket.tagId) }}</span>
         </div>
         
         <div class="meta-row">
           <span class="meta-label">Status:</span>
-          <span class="status-badge" [ngClass]="getStatusClass(ticket.statusId)">
-            {{ ticket.statusId }}
+          <span class="meta-value">
+            {{ statusesMap.get(ticket.statusId) }}
           </span>
         </div>
         
         <div class="meta-row">
           <span class="meta-label">Priority:</span>
-          <span class="priority-badge" [ngClass]="getPriorityClass(ticket.priorityId)">
-            {{ getPriorityText(ticket.priorityId) }}
+          <span class="meta-value">
+            {{ prioritiesMap.get(ticket.priorityId) }}
           </span>
         </div>
         
         <div class="meta-row">
           <span class="meta-label">Creation Date:</span>
-          <span class="meta-value">{{ formatDate(ticket.createdAt) }}</span>
+          <span class="meta-value">{{ ticket.createdAt | date: 'fullDate'}}</span>
         </div>
         
         <div class="meta-row">

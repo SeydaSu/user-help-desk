@@ -5,55 +5,48 @@ import { Router } from '@angular/router';
 import { TicketFacade } from '../../store/ticket.facade';
 import { Ticket } from '../../../models/ticket.model';
 
-
 @Component({
   selector: 'app-ticket-list',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './ticket-list.html',
-  styleUrl: './ticket-list.css'
+  styleUrl: './ticket-list.css',
 })
 export class TicketListComponent implements OnInit {
   tickets$: Observable<Ticket[]>;
   isLoading$: Observable<boolean>;
   error$: Observable<string | undefined>;
 
-  private testTickets: Ticket[] = [
-    {
-      id: 1,
-      title: 'Test Ticket 1',
-      description: 'This is a test ticket with detailed description. It contains information about the issue that needs to be resolved.',
-      createdAt: new Date().toISOString(),
-      priorityId: 3,
-      statusId: 3,
-      createdBy: 'user@example.com',
-      userId: 1,
-      tagId: 1
-    },
-    {
-      id: 2,
-      title: 'Test Ticket 2',
-      description: 'Another test ticket with different status and priority. This one is currently being worked on by the development team.',
-      createdAt: new Date().toISOString(),
-      priorityId: 2,
-      statusId: 2,
-      createdBy: 'admin@example.com',
-      userId: 2,
-      tagId: 2
-    }
-  ];
-
-  constructor(
-    private router: Router,
-    private ticketFacade: TicketFacade
-  ) {
+  constructor(private router: Router, private ticketFacade: TicketFacade) {
     this.tickets$ = this.ticketFacade.tickets$;
     this.isLoading$ = this.ticketFacade.isLoading$;
     this.error$ = this.ticketFacade.error$;
   }
 
+  tagsMap = new Map<number, string>();
+
+  tickets: Ticket[] = [];
+  currentPage = 1;
+  pageSize = 8;
+
+  get paginatedTickets(): Ticket[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.tickets.slice(start, start + this.pageSize);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.tickets.length / this.pageSize);
+  }
   ngOnInit(): void {
-    this.ticketFacade.setTickets(this.testTickets);
+    this.ticketFacade.loadMyTickets();
+
+    this.tickets$.subscribe((tickets) => {
+      this.tickets = tickets;
+    });
+
+    this.ticketFacade.getAllTags().subscribe((tags) => {
+      tags.forEach((tag) => this.tagsMap.set(tag.id, tag.name));
+    });
   }
 
   goToDetails(id: number): void {
@@ -61,6 +54,6 @@ export class TicketListComponent implements OnInit {
   }
 
   refreshTickets(): void {
-    this.ticketFacade.setTickets(this.testTickets);
+    this.ticketFacade.loadMyTickets();
   }
 }
