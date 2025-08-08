@@ -1,0 +1,105 @@
+.ticket-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  border-radius: 8px;
+  background-color: #e1ebe4f6;
+  box-shadow: 0.063rem 0 1.25rem 0 #8690a3;
+  
+}
+
+.ticket-form div {
+  margin-bottom: 1.5rem;
+  margin-top: 1rem
+}
+
+.ticket-form label {
+  display: block;
+  margin-bottom: 0.12rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.ticket-form input,
+.ticket-form textarea,
+.ticket-form select {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.ticket-form input:focus,
+.ticket-form textarea:focus,
+.ticket-form select:focus {
+  border-color: #071d09;
+  outline: none;
+}
+
+.ticket-form button {
+  padding: 0.7rem 1.5rem;
+  background-color: #1b5421;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ticket-form button:hover {
+  background-color: #3b5142;
+}
+
+.ticket-form div div {
+  color: #dc3545;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+.logo-container {
+  
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.2rem;
+  width: 100%;
+}
+
+.logo {
+  background-color: #3b5142;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  font-size: 22px;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.logo:hover {
+  background-color: #3b5142;
+}
+
+.logo-text {
+  margin-left: 16px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.logo-icon {
+  font-size: 32px;
+  color: #fff;
+}
+
+.logo-text-main {
+  font-size: 18px;
+  font-weight: 600;
+  white-space: nowrap;
+}

@@ -1,0 +1,72 @@
+<div class="logo-container">
+    <button class="logo" (click)="goToDashboard()">
+      <i class="fas fa-user-circle logo-icon"></i>
+    </button>
+    <div>
+
+  </div>
+<div *ngIf="ticket$ | async as ticket; " class="ticket-detail">
+<form class="ticket-form" [formGroup]="ticketForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="title">Title</label>
+    <input id="title" formControlName="title" />
+    <div
+      *ngIf="ticketForm.get('title')?.touched && ticketForm.get('title')?.invalid"
+    >
+      Title is required.
+    </div>
+  </div>
+
+  <div>
+    <label for="description">Description</label>
+    <textarea id="ticket" formControlName="description">
+        <option [ngValue]="null">{{ticket.description}}</option>
+    </textarea>
+    <div
+      *ngIf="ticketForm.get('description')?.touched && ticketForm.get('description')?.invalid"
+    >
+      Description must be at least 10 characters.
+    </div>
+  </div>
+
+<div>
+    <label for="tagId">Category (Tag)</label>
+    <select id="tagId" formControlName="tagId">
+      <option [ngValue]="null"></option>
+      <option *ngFor="let tag of tagOptions" [ngValue]="tag.id">{{ tag.name }}</option>
+    </select>
+    <div *ngIf="ticketForm.get('tagId')?.touched && ticketForm.get('tagId')?.invalid">
+      Category selection is required.
+    </div>
+  </div>
+
+  <div>
+    <label for="priorityId">Priority</label>
+    <select id="priorityId" formControlName="priorityId">
+      <option [ngValue]="null"></option>
+      <option *ngFor="let p of priorityOptions" [ngValue]="p.id">{{ p.name }}</option>
+    </select>
+    <div *ngIf="ticketForm.get('priorityId')?.touched && ticketForm.get('priorityId')?.invalid">
+      Priority selection is required.
+    </div>
+  </div>
+
+  <div>
+    <label for="statusId">Status</label>
+    <select id="statusId" formControlName="statusId">
+      <option [ngValue]="null"></option>
+      <option *ngFor="let s of statusOptions" [ngValue]="s.id">{{ s.name }}</option>
+    </select>
+    <div *ngIf="ticketForm.get('statusId')?.touched && ticketForm.get('statusId')?.invalid">
+      Status selection is required.
+    </div>
+  </div>
+
+
+  <div *ngIf="showSuccessMessage" class="success-message">
+    🎉 Ticket updated successfully!
+  </div>
+  <button type="submit">Update Ticket</button>
+</form>
+
+</div>
