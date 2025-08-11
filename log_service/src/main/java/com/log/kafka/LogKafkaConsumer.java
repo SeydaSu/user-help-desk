@@ -14,7 +14,7 @@ public class LogKafkaConsumer {
 
     private final ILogService logService;
 
-    @KafkaListener(topics = {"userRegistered", "userLogin", "ticketCreated", "priorityUpdated"}, groupId = "log-group")
+    @KafkaListener(topics = {"userRegistered", "userLogin", "ticketCreated","ticketUpdated", "tagCreated", "priorityCreated", "statusCreated"}, groupId = "log-group")
     public void consume(ConsumerRecord<String, String> record) {
         logService.listen(record);
     }

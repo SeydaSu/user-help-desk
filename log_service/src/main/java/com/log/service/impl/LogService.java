@@ -23,7 +23,7 @@ public class LogService implements ILogService{
     private final LogRepository logRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @KafkaListener(topics = {"userRegistered", "userLogin", "ticketCreated", "priorityUpdated"}, groupId = "log-group")
+    @KafkaListener(topics = {"userRegistered", "userLogin", "ticketCreated", "ticketUpdated", "tagCreated", "priorityCreated", "statusCreated"}, groupId = "log-group")
     public void listen(ConsumerRecord<String, String> record) {
         String topic = record.topic();
         String message = record.value();
@@ -43,9 +43,13 @@ public class LogService implements ILogService{
                 switch (eventType) {
                     case "USER_REGISTERED":
                     case "USER_LOGGED_IN":
+                    case "TICKET_CREATED":
+                    case "TAG_CREATED":
+                    case "PRIORITY_CREATED":
+                    case "STATUS_CREATED":
                         logEntry.setLogLevel(LogLevel.INFO);
                         break;
-                    case "PRIORITY_UPDATED":
+                    case "TICKET_UPDATED":
                         logEntry.setLogLevel(LogLevel.WARN);
                         break;
                     default:
@@ -55,7 +59,6 @@ public class LogService implements ILogService{
                 logEntry.setLogLevel(LogLevel.INFO);
             }
 
-            // Eğer timestamp varsa, parse edip atayabilirsin:
             if (jsonNode.has("timestamp")) {
                 String timestampStr = jsonNode.get("timestamp").asText();
                 logEntry.setTimestamp(LocalDateTime.parse(timestampStr));
@@ -64,14 +67,13 @@ public class LogService implements ILogService{
             }
 
         } catch (Exception e) {
-            // Parsing başarısızsa, mesajı olduğu gibi kaydet
             logEntry.setMessage(message);
             logEntry.setLogLevel(LogLevel.INFO);
             logEntry.setTimestamp(LocalDateTime.now());
         }
 
         logRepository.save(logEntry);
-        System.out.println("Log kaydedildi: " + message);
+        System.out.println("Log recorded: " + message);
     }
 
 
