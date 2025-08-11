@@ -1,0 +1,75 @@
+<div class="ticket-detail-container">
+  <div *ngIf="isLoading$ | async" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Ticket detayları yükleniyor...</p>
+  </div>
+
+  <div *ngIf="ticket$ | async as ticket; else notFound" class="ticket-detail">
+   
+    <div class="ticket-card">
+      <h1 class="ticket-title">{{ ticket.title }}</h1>
+      
+      <div class="ticket-description">
+        <p>{{ ticket.description }}</p>
+      </div>
+
+ 
+      <div class="ticket-meta">
+         <div class="meta-row">
+          <span class="meta-label">Response:</span>
+          <span class="meta-value">{{ ticket.response }}</span>
+        </div>
+        
+        <div class="meta-row">
+          <span class="meta-label">Tag:</span>
+          <span class="meta-value">{{ tagsMap.get(ticket.tagId) }}</span>
+        </div>
+        
+        <div class="meta-row">
+          <span class="meta-label">Status:</span>
+          <span class="meta-value">
+            {{ statusesMap.get(ticket.statusId) }}
+          </span>
+        </div>
+        
+        <div class="meta-row">
+          <span class="meta-label">Priority:</span>
+          <span class="meta-value">
+            {{ prioritiesMap.get(ticket.priorityId) }}
+          </span>
+        </div>
+        
+        <div class="meta-row">
+          <span class="meta-label">Creation Date:</span>
+          <span class="meta-value">{{ ticket.createdAt | date: 'fullDate'}}</span>
+        </div>
+        
+        <div class="meta-row">
+          <span class="meta-label">Created By:</span>
+          <span class="meta-value">{{ ticket.createdBy }}</span>
+        </div>
+      </div>
+
+      <div class="ticket-actions">
+        <button class="btn btn-details btn-secondary" (click)="goBack()">
+          Go Back
+        </button>
+        <button class="btn btn-details" (click)="editTicket(ticket)">
+          Respond Ticket
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #notFound>
+    <div class="not-found-container">
+      <div class="not-found-content">
+        <h2>Ticket Not Found</h2>
+        <p>The ticket you are looking for may not be available or may have been deleted..</p>
+        <button class="btn btn-details" (click)="goBack()">
+          Return to Ticket List
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</div>
