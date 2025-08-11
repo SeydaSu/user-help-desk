@@ -1,6 +1,5 @@
 package com.project.service.impl;
 
-
 import java.time.LocalDateTime;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -33,7 +32,6 @@ public class AuthenticationService implements IAuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final KafkaProducerService kafkaProducerService;
 
-
     public AuthenticationResponse register(RegisterRequest request) {
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
@@ -44,14 +42,15 @@ public class AuthenticationService implements IAuthenticationService {
                 .name(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(request.getRole())
+                .role(request.getRole()) 
                 .build();
 
         try {
-        userRepository.save(user);
+            userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
             throw new BadCredentialsException("This email address is already in use.");
         }
+        
         // Kafka event JSON oluştur
         String eventJson = """
             {
@@ -62,21 +61,19 @@ public class AuthenticationService implements IAuthenticationService {
              }
         """.formatted(user.getId(), user.getEmail(), LocalDateTime.now());
 
-        // Kafka’ya event gönder
+        // Kafka'ya event gönder
         kafkaProducerService.sendUserRegisteredEvent(eventJson);
 
-
-        var jwtToken = jwtService.generateToken(user);
+        // JWT token oluştur - User objesi ile (kullanıcı bilgileri otomatik eklenecek)
+        var jwtToken = jwtService.generateTokenForUser(user);
+        
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .userId(user.getId().longValue())
                 .role(user.getRole())
                 .build();
-    
-    
     }
 
-   
     // User login - sadece USER rolündeki kullanıcılar
     public AuthenticationResponse loginUser(AuthenticationRequest request) {
         // Kullanıcıyı bul
@@ -113,8 +110,9 @@ public class AuthenticationService implements IAuthenticationService {
 
         kafkaProducerService.sendUserLoginEvent(eventJson);
 
-        // JWT token oluştur ve response döndür
-        var jwtToken = jwtService.generateToken(user);
+        // JWT token oluştur - User objesi ile (kullanıcı bilgileri otomatik eklenecek)
+        var jwtToken = jwtService.generateTokenForUser(user);
+        
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .userId(user.getId().longValue())
@@ -158,15 +156,13 @@ public class AuthenticationService implements IAuthenticationService {
 
         kafkaProducerService.sendUserLoginEvent(eventJson);
 
-        // JWT token oluştur ve response döndür
-        var jwtToken = jwtService.generateToken(user);
+        // JWT token oluştur - User objesi ile (kullanıcı bilgileri otomatik eklenecek)
+        var jwtToken = jwtService.generateTokenForUser(user);
+        
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .userId(user.getId().longValue())
                 .role(user.getRole())
                 .build();
     }
-
-
-    
 }

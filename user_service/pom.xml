@@ -58,7 +58,6 @@
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
-			<!-- Ya da kullandığınız Spring Boot sürümüne uygun -->
 		</dependency>
 
 		<dependency>
