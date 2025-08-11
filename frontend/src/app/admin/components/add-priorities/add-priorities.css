@@ -11,3 +11,13 @@
   width: 2rem;
   height: 2rem;
 }
+
+.header-actions {
+  position: relative;
+}
+
+.btn-go-back {
+  position: absolute;
+  top: 11px;
+  right: 16px;
+}
