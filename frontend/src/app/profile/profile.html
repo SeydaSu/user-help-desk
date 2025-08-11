@@ -1,0 +1,12 @@
+<div *ngIf="isLoading" class="loading">Yükleniyor...</div>
+
+<div *ngIf="!isLoading && user" class="profile-card">
+  <h2>👤 User Profile</h2>
+  <p><strong>Name:</strong> {{ user.name }}</p>
+  <p><strong>Email:</strong> {{ user.email }}</p>
+</div>
+  <button type="button" class="btn btn-success" (click)="goBack()">Go Back</button>
+
+
+<div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+
