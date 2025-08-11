@@ -49,11 +49,14 @@ export class AdminTicketListComponent implements OnInit {
   }
 
   goToDetails(id: number): void {
-    this.router.navigate(['/ticket', id]);
+    this.router.navigate(['/admin/ticket', id]);
   }
 
   refreshTickets(): void {
     this.adminFacade.refreshTickets();
   }
 
+  goBack() {
+    this.router.navigate(['/admin-dashboard']);
+  }
 }

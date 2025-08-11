@@ -77,3 +77,13 @@
 .btn-details:hover {
   background-color: #3b5142;
 }
+
+.header-actions {
+  position: relative;
+}
+
+.btn-success {
+  position: absolute;
+  top: 11px;
+  right: 16px;
+}
