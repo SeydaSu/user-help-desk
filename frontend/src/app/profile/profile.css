@@ -1,0 +1,62 @@
+:host {
+  display: block;
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.profile-card {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  transition: box-shadow 0.3s ease;
+}
+
+.profile-card:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.profile-card h2 {
+  margin-bottom: 16px;
+  color: #2c3e50;
+  font-size: 22px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 8px;
+}
+
+.profile-card p {
+  font-size: 16px;
+  margin: 8px 0;
+  color: #34495e;
+}
+
+.profile-card strong {
+  color: #2c3e50;
+}
+
+.loading,
+.error {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.loading {
+  color: #3498db;
+}
+
+.error {
+  color: #e74c3c;
+}
+
+.header-actions {
+  position: relative;
+}
+
+.btn-success {
+  position: absolute;
+  top: 11px;
+  right: 16px;
+}

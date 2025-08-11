@@ -3,8 +3,8 @@ import { catchError, finalize, tap } from 'rxjs/operators';
 import { TicketQuery } from '../store/ticket.query';
 import { TicketService } from '../store/ticket.service';
 import { TicketRepository } from '../store/ticket.repository';
-import { Ticket } from '../store/ticket.model';
 import { Observable, throwError } from 'rxjs';
+import { Ticket, TicketRequest } from '../../models/ticket.model';
 
 @Injectable({ providedIn: 'root' })
 export class TicketFacade {
@@ -48,18 +48,29 @@ export class TicketFacade {
   }
 
 
-  loadTickets() {
-    this.ticketService.setLoading(true);
-    this.ticketRepository
-      .getTickets()
-      .pipe(finalize(() => this.ticketService.setLoading(false)))
-      .subscribe({
-        next: (tickets) => this.ticketService.setTickets(tickets),
-        error: (err) => this.ticketService.setError('Ticketlar yüklenemedi'),
-      });
-  }
+  loadMyTickets() {
+  this.ticketService.setLoading(true);
+  this.ticketRepository
+    .getMyTickets()
+    .pipe(finalize(() => this.ticketService.setLoading(false)))
+    .subscribe({
+      next: (tickets) => this.ticketService.setTickets(tickets),
+      error: () => this.ticketService.setError('Kullanıcı ticketları yüklenemedi'),
+    });
+    
+}
+loadAllTickets() {
+  this.ticketService.setLoading(true);
+  this.ticketRepository
+    .getAllTicketsForAdmin()
+    .pipe(finalize(() => this.ticketService.setLoading(false)))
+    .subscribe({
+      next: (tickets) => this.ticketService.setTickets(tickets),
+      error: () => this.ticketService.setError('Kullanıcı ticketları yüklenemedi'),
+    });
+}
 
-  createTicket(ticket: Partial<Ticket>): Observable<Ticket> {
+  createTicket(ticket: TicketRequest): Observable<Ticket> {
   this.ticketService.setLoading(true);
   return this.ticketRepository.createTicket(ticket).pipe(
     finalize(() => this.ticketService.setLoading(false)),
@@ -72,7 +83,7 @@ export class TicketFacade {
 }
 
 
-  updateTicket(id: number, ticket: Partial<Ticket>) {
+  updateTicket(id: number, ticket: TicketRequest) {
     this.ticketService.setLoading(true);
     this.ticketRepository
       .updateTicket(id, ticket)

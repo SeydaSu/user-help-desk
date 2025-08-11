@@ -8,8 +8,9 @@ import {
   setActiveId,
 } from '@ngneat/elf-entities';
 import { ticketStore } from './ticket.store';
-import { Ticket } from './ticket.model';
+
 import { Observable } from 'rxjs';
+import { Ticket } from '../../models/ticket.model';
 
 @Injectable({ providedIn: 'root' })
 export class TicketService {
