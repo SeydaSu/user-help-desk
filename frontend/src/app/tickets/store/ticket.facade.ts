@@ -57,6 +57,17 @@ export class TicketFacade {
       next: (tickets) => this.ticketService.setTickets(tickets),
       error: () => this.ticketService.setError('Kullanıcı ticketları yüklenemedi'),
     });
+    
+}
+loadAllTickets() {
+  this.ticketService.setLoading(true);
+  this.ticketRepository
+    .getAllTicketsForAdmin()
+    .pipe(finalize(() => this.ticketService.setLoading(false)))
+    .subscribe({
+      next: (tickets) => this.ticketService.setTickets(tickets),
+      error: () => this.ticketService.setError('Kullanıcı ticketları yüklenemedi'),
+    });
 }
 
   createTicket(ticket: TicketRequest): Observable<Ticket> {

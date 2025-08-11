@@ -75,9 +75,6 @@ export interface TicketAdminUpdateRequest {
   priorityId: number;
   response: string;
   tagId: number;
+  userId: number;
 
-  // ID ile gelen veriye karşılık gösterim için (opsiyonel ama önerilir)
-  priority?: PriorityResponse;
-  status?: StatusResponse;
-  tag?: Tag;
 }

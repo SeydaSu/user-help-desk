@@ -1,19 +1,19 @@
 <div class="pagination-controls">
-  <button 
-    class="btn-page" 
-    (click)="currentPage = currentPage - 1" 
-    [disabled]="currentPage === 1">
+  <button
+    class="btn-page"
+    (click)="currentPage = currentPage - 1"
+    [disabled]="currentPage === 1"
+  >
     ← Prev
   </button>
 
-  <span class="page-info">
-    Page {{ currentPage }} of {{ totalPages }}
-  </span>
+  <span class="page-info"> Page {{ currentPage }} of {{ totalPages }} </span>
 
-  <button 
-    class="btn-page" 
-    (click)="currentPage = currentPage + 1" 
-    [disabled]="currentPage === totalPages">
+  <button
+    class="btn-page"
+    (click)="currentPage = currentPage + 1"
+    [disabled]="currentPage === totalPages"
+  >
     Next →
   </button>
 </div>
@@ -26,10 +26,17 @@
       <span class="meta-item">
         <strong>Tag:</strong> {{ tagsMap.get(ticket.tagId) || 'Undefined' }}
       </span>
-      <span class="meta-item"><strong>Created By:</strong> {{ ticket.createdBy }}</span>
+      <span class="meta-item"
+        ><strong>Created By:</strong> {{ ticket.createdBy }}</span
+      >
     </div>
     <div class="ticket-actions">
-      <button class="btn-details" (click)="goToDetails(ticket.id)">Details</button>
+      <button class="btn-details" (click)="goToDetails(ticket.id)">
+        Details
+      </button>
     </div>
   </div>
+  <button type="button" class="btn btn-success" (click)="goBack()">
+    Go Back
+  </button>
 </div>

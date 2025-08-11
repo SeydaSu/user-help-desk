@@ -10,7 +10,7 @@ import { Tag, TagResponse } from '../../models/tag.model';
 @Injectable({ providedIn: 'root' })
 export class TicketRepository {
   private apiUrl = 'http://localhost:8082/api/v1/ticket';
-  private adminServiceUrl = 'http://localhost:8085/api/v1/admin/ticket';  // priority ve status için
+  private adminServiceUrl = 'http://localhost:8085/api/v1/admin';  // priority ve status için
   private tagServiceUrl = 'http://localhost:8084/api/v1/tags';  // tag için
 
   constructor(private http: HttpClient) {}
@@ -22,7 +22,11 @@ export class TicketRepository {
   });
 
   return this.http.get<Ticket[]>(`${this.apiUrl}/my`, { headers });
-}
+  }
+
+  getAllTicketsForAdmin(): Observable<Ticket[]> {
+    return this.http.get<Ticket[]>(`${this.apiUrl}/admin/tickets`);
+  }
 
   getTicket(id: number): Observable<Ticket> {
     return this.http.get<Ticket>(`${this.apiUrl}/${id}`);
@@ -42,14 +46,14 @@ export class TicketRepository {
   }
 
   getAllPriorities(): Observable<PriorityResponse[]> {
-    return this.http.get<PriorityResponse[]>(`${this.adminServiceUrl}/priorities`);
+    return this.http.get<PriorityResponse[]>(`${this.adminServiceUrl}/ticket/priorities`);
   }
 
   getAllStatuses(): Observable<StatusResponse[]> {
-    return this.http.get<StatusResponse[]>(`${this.adminServiceUrl}/statuses`);
+    return this.http.get<StatusResponse[]>(`${this.adminServiceUrl}/ticket/statuses`);
   }
 
   getAllTags(): Observable<TagResponse[]> {
-    return this.http.get<TagResponse[]>(`${this.adminServiceUrl}/tags`);
+    return this.http.get<TagResponse[]>(`${this.adminServiceUrl}/ticket/tags`);
   }
 }

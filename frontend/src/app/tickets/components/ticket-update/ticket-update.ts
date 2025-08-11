@@ -58,6 +58,7 @@ export class TicketUpdateComponent {
             ticket.description,
             [Validators.required, Validators.minLength(10)],
           ],
+          response: [ticket.response, Validators.required],
           tagId: [ticket.tagId, Validators.required],
           priorityId: [ticket.priorityId, Validators.required],
           statusId: [ticket.statusId, Validators.required],

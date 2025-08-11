@@ -56,4 +56,8 @@ export class TicketListComponent implements OnInit {
   refreshTickets(): void {
     this.ticketFacade.loadMyTickets();
   }
+
+  goBack() {
+    this.router.navigate(['/dashboard']);
+  }
 }
