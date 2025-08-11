@@ -24,6 +24,7 @@ import com.admin.dto.StatusResponse;
 import com.admin.dto.TagRequest;
 import com.admin.dto.TagResponse;
 import com.admin.exception.TagNotFoundException;
+import com.admin.kafka.KafkaProducerService;
 import com.admin.model.PriorityEntity;
 import com.admin.model.StatusEntity;
 import com.admin.repository.PriorityRepository;
@@ -43,10 +44,13 @@ public class AdminTicketAssignServiceTest {
     @Mock
     private AdminTicketAssignService adminTicketAssignService;
 
+    @Mock
+    private KafkaProducerService kafkaProducerService;
+
     @BeforeEach
     void setUp() {
         tagClient = mock(TagClient.class);
-        adminTicketAssignService = new AdminTicketAssignService(tagClient,priorityRepository,statusRepository);
+        adminTicketAssignService = new AdminTicketAssignService(tagClient,priorityRepository,statusRepository, kafkaProducerService);
     }
 
     @Test

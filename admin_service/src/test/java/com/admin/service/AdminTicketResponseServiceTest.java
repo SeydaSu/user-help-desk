@@ -53,7 +53,7 @@ public class AdminTicketResponseServiceTest {
     @Test
     void givenInvalidRequest_whenRespondToTicket_thenThrowsInvalidInputException() {
         Long ticketId = 2L;
-        TicketAdminUpdateRequest request = new TicketAdminUpdateRequest(ticketId,  1L, 1L, null, 1L);
+        TicketAdminUpdateRequest request = new TicketAdminUpdateRequest(ticketId,  1L, 1L, null, 1L, 1L);
 
         when(ticketClient.respondToTicket(eq(ticketId), eq(request)))
                 .thenThrow(new RuntimeException("Response can not be null or empty"));
@@ -67,7 +67,7 @@ public class AdminTicketResponseServiceTest {
     void givenValidRequest_whenUpdateTag_thenReturnsOk() {
         Long ticketId = 2L;
 
-        TicketAdminUpdateRequest request = new TicketAdminUpdateRequest(ticketId, 1L, 1L, "response content", 1L);
+        TicketAdminUpdateRequest request = new TicketAdminUpdateRequest(ticketId, 1L, 1L, "response content", 1L, 1L);
 
         TicketResponse expectedResponse = new TicketResponse();
         expectedResponse.setTagId(1L);
@@ -84,7 +84,7 @@ public class AdminTicketResponseServiceTest {
     @Test
     void givenInvalidRequest_whenUpdateTag_thenThrowsException() {
          Long ticketId = 2L;
-        TicketAdminUpdateRequest request = new TicketAdminUpdateRequest(ticketId,  1L, 1L, "response content", null);
+        TicketAdminUpdateRequest request = new TicketAdminUpdateRequest(ticketId,  1L, 1L, "response content", null, 1L);
 
         when(ticketClient.updateTag(eq(ticketId), eq(request)))
                 .thenThrow(new RuntimeException("Tag can not be null or empty"));
@@ -101,7 +101,7 @@ public class AdminTicketResponseServiceTest {
     void givenValidRequest_whenUpdatePriority_thenReturnsOk() {
         Long ticketId = 2L;
 
-        TicketAdminUpdateRequest request = new TicketAdminUpdateRequest(ticketId, 1L, 1L, "response content", 1L);
+        TicketAdminUpdateRequest request = new TicketAdminUpdateRequest(ticketId, 1L, 1L, "response content", 1L, 1L);
 
         TicketResponse expectedResponse = new TicketResponse();
         expectedResponse.setPriorityId(1L);
@@ -118,7 +118,7 @@ public class AdminTicketResponseServiceTest {
     @Test
     void givenInvalidRequest_whenUpdatePriority_thenThrowsException() {
         Long ticketId = 2L;
-        TicketAdminUpdateRequest request = new TicketAdminUpdateRequest(ticketId,  1L,null, "response content", 1L);
+        TicketAdminUpdateRequest request = new TicketAdminUpdateRequest(ticketId,  1L,null, "response content", 1L, 1L);
 
         when(ticketClient.updatePriority(eq(ticketId), eq(request)))
                 .thenThrow(new RuntimeException("Priority can not be null or empty"));
@@ -133,7 +133,7 @@ public class AdminTicketResponseServiceTest {
     void givenValidRequest_whenUpdateStatus_thenReturnsOk() {
         Long ticketId = 2L;
 
-        TicketAdminUpdateRequest request = new TicketAdminUpdateRequest(ticketId, 1L, 1L, "response content", 1L);
+        TicketAdminUpdateRequest request = new TicketAdminUpdateRequest(ticketId, 1L, 1L, "response content", 1L, 1L);
 
         TicketResponse expectedResponse = new TicketResponse();
         expectedResponse.setStatusId(1L);
@@ -150,7 +150,7 @@ public class AdminTicketResponseServiceTest {
     @Test
     void givenInvalidRequest_whenUpdateStatus_thenThrowsException() {
         Long ticketId = 2L;
-        TicketAdminUpdateRequest request = new TicketAdminUpdateRequest(ticketId,  null, 1L, "response content", 1L);
+        TicketAdminUpdateRequest request = new TicketAdminUpdateRequest(ticketId,  null, 1L, "response content", 1L, 1L);
 
         when(ticketClient.updateStatus(eq(ticketId), eq(request)))
                 .thenThrow(new RuntimeException("Status can not be null or empty"));

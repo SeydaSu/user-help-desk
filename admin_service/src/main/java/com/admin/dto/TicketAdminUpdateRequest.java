@@ -21,6 +21,8 @@ public class TicketAdminUpdateRequest {
     private String response;
 
     private Long tagId;
+    
+    private Long userId;
 
     
     
