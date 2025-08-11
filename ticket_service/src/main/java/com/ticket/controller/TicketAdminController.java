@@ -20,22 +20,22 @@ public class TicketAdminController {
 
     private final ITicketAdminService ticketAdminService;
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public TicketResponse respondToTicket(@PathVariable Long id, @RequestBody TicketAdminUpdateRequest request) {
         return ticketAdminService.respondToTicket(id, request);
     }
 
-    @PutMapping("{id}/priority")
+    @PutMapping("/{id}/priority")
     public TicketResponse updatePriority(@PathVariable Long id, @RequestBody TicketAdminUpdateRequest request) {
         return ticketAdminService.updatePriority(id, request);
     }
 
-    @PutMapping("{id}/status")
+    @PutMapping("/{id}/status")
     public TicketResponse updateStatus(@PathVariable Long id, @RequestBody TicketAdminUpdateRequest request) {
         return ticketAdminService.updateStatus(id, request);
     }
 
-    @PutMapping("{id}/tag")
+    @PutMapping("/{id}/tag")
     public TicketResponse updateTag(@PathVariable Long id, @RequestBody TicketAdminUpdateRequest request) {
         return ticketAdminService.updateTag(id, request);
     }

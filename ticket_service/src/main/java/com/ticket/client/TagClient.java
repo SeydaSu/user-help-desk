@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.ticket.dto.TagResponse;
 
 
-@FeignClient(name = "tag-service")
+@FeignClient(name = "tag-service",  url = "http://localhost:8084")
 public interface TagClient {
     @GetMapping("/api/v1/tags/{id}")
     TagResponse getTagById(@PathVariable Long id);
