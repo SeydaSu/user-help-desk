@@ -38,7 +38,7 @@ export class Dashboard implements OnInit {
       icon: 'fal fa-ticket-alt',
       label: 'Tickets'
     }, {
-      routerLink: '/users',
+      routerLink: '/user-profile',
       icon: 'fal fa-users',
       label: 'Profile'
     }, {

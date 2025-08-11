@@ -43,6 +43,15 @@ export class AdminFacade {
   respondToTicket(id: number, payload: TicketAdminUpdateRequest) {
     return this.service.updateTicket(id, payload);
   }
+  updatePriority(id: number, payload: TicketAdminUpdateRequest) {
+    return this.service.updatePriority(id, payload);
+  }
+  updateStatus(id: number, payload: TicketAdminUpdateRequest) {
+    return this.service.updateStatus(id, payload);
+  }
+  updateTag(id: number, payload: TicketAdminUpdateRequest) {
+    return this.service.updateTag(id, payload);
+  }
 
   setPriority(id: number, payload: TicketAdminUpdateRequest) {
     return this.service.updatePriority(id, payload);
