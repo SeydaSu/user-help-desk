@@ -5,7 +5,8 @@ import {
   withEntities,
   withActiveId,
 } from '@ngneat/elf-entities';
-import { Ticket } from './ticket.model';
+import { Ticket } from '../../models/ticket.model';
+
 
 export interface TicketState extends EntitiesState<Ticket> {
   isLoading: boolean;

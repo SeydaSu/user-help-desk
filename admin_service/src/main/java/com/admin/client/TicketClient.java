@@ -26,7 +26,7 @@ public interface TicketClient {
     @PutMapping("/{id}/tag")
     TicketResponse updateTag(@PathVariable("id") Long id, @RequestBody TicketAdminUpdateRequest request);
 
-    @GetMapping("/admin/list")
+    @GetMapping("/admin/tickets")
     List<TicketResponse> getAllTicketsForAdmin();
 
     @GetMapping("/{id}")

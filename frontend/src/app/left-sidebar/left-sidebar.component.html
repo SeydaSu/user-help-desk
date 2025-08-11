@@ -13,22 +13,6 @@
       </button>
     }
   </div>
-
-  <div class="sidenav-nav">
-    @for(item of items; track $index){
-      <li class="sidenav-nav-item">
-        <a
-          class="sidenav-nav-link"
-          [routerLink]="item.routerLink"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{exact: true}"
-        >
-          <i class="sidenav-link-icon" [class]="item.icon"></i>
-          @if(!isLeftSideBarCollapsed()) {
-            <span class="sidenav-link-text">{{ item.label }}</span>
-          }
-        </a>
-      </li>
-    }
-  </div>
+   <ng-content></ng-content>
+  
 </div>
