@@ -23,13 +23,13 @@ public class TicketQueryController {
 
     private final ITicketQueryService ticketQueryService;
 
-    @GetMapping("/ticket/my")
+    @GetMapping("ticket/my")
     public List<TicketEntity> getTicketsByCurrentUser() {
         return ticketQueryService.getTicketsByCurrentUser();
     }
 
 
-    @GetMapping("/ticket/{id}")
+    @GetMapping("ticket/{id}")
     public TicketResponse getTicketById(@PathVariable Long id) {
         return ticketQueryService.getTicketById(id);
     }

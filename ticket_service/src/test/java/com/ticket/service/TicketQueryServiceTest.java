@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
@@ -18,11 +19,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.ticket.config.JwtService;
 import com.ticket.dto.TicketResponse;
 import com.ticket.exception.TicketNotFoundException;
 import com.ticket.model.TicketEntity;
 import com.ticket.repository.TicketRepository;
 import com.ticket.service.impl.TicketQueryService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 public class TicketQueryServiceTest {
 
@@ -30,12 +34,11 @@ public class TicketQueryServiceTest {
 
     @AfterEach
     void tearDown() {
-        // MockedStatic'i her test sonrası kapat
         if (mockedSecurityContext != null) {
             mockedSecurityContext.close();
         }
     }
-    
+
     @Test
     public void givenExistingTickets_whenGetTicketsByCurrentUser_thenReturnsTicketResponseList() {
         TicketEntity ticket1 = TicketEntity.builder()
@@ -49,7 +52,7 @@ public class TicketQueryServiceTest {
                 .build();
 
         TicketEntity ticket2 = TicketEntity.builder()
-                .title("Ticket 2")  
+                .title("Ticket 2")
                 .description("Description for ticket 2")
                 .statusId(2L)
                 .priorityId(2L)
@@ -59,54 +62,57 @@ public class TicketQueryServiceTest {
                 .build();
 
         TicketRepository ticketRepository = mock(TicketRepository.class);
-        ticketRepository.save(ticket1);
-        ticketRepository.save(ticket2);
-        when(ticketRepository.findByCreatedBy("user1")).thenReturn(Arrays.asList(ticket1, ticket2));
+        JwtService jwtService = mock(JwtService.class);
+        HttpServletRequest request = mock(HttpServletRequest.class);
 
         mockedSecurityContext = mockStatic(SecurityContextHolder.class);
         SecurityContext securityContext = mock(SecurityContext.class);
         Authentication authentication = mock(Authentication.class);
-            
-        when(authentication.getName()).thenReturn("user1");
+
         when(authentication.isAuthenticated()).thenReturn(true);
         when(securityContext.getAuthentication()).thenReturn(authentication);
         when(SecurityContextHolder.getContext()).thenReturn(securityContext);
-            
 
-        TicketQueryService ticketService = new TicketQueryService(ticketRepository);
+        when(request.getHeader("Authorization")).thenReturn("Bearer mock-token");
+        when(jwtService.isTokenValid("mock-token")).thenReturn(true);
+        when(jwtService.extractUserId("mock-token")).thenReturn("1");
+        when(ticketRepository.findByUserId(1L)).thenReturn(Arrays.asList(ticket1, ticket2));
+
+        TicketQueryService ticketService = new TicketQueryService(ticketRepository, jwtService, request);
         List<TicketEntity> tickets = ticketService.getTicketsByCurrentUser();
 
         assertEquals(2, tickets.size());
         assertEquals("Ticket 1", tickets.get(0).getTitle());
-        verify(ticketRepository, times(1)).findByCreatedBy("user1");
+        verify(ticketRepository, times(1)).findByUserId(1L);
     }
 
     @Test
-    public void givenNoTicketExist_whenGetTicketsByCurrentUser_thenReturnsEmptyList() {
+    public void givenNoTicketExist_whenGetTicketsByCurrentUser_thenThrowsException() {
         TicketRepository ticketRepository = mock(TicketRepository.class);
-       
+        JwtService jwtService = mock(JwtService.class);
+        HttpServletRequest request = mock(HttpServletRequest.class);
+
         mockedSecurityContext = mockStatic(SecurityContextHolder.class);
         SecurityContext securityContext = mock(SecurityContext.class);
         Authentication authentication = mock(Authentication.class);
-            
-        when(authentication.getName()).thenReturn("user1");
+
         when(authentication.isAuthenticated()).thenReturn(true);
         when(securityContext.getAuthentication()).thenReturn(authentication);
         when(SecurityContextHolder.getContext()).thenReturn(securityContext);
-            
-        // Mock repository to return empty list
-        when(ticketRepository.findByCreatedBy("user1")).thenReturn(Arrays.asList());
-            
-        TicketQueryService ticketService = new TicketQueryService(ticketRepository);
-            
-            // Bu durumda exception fırlatılması beklenir
+
+        when(request.getHeader("Authorization")).thenReturn("Bearer mock-token");
+        when(jwtService.extractUserId("mock-token")).thenReturn("1");
+        when(jwtService.isTokenValid("mock-token")).thenReturn(true);
+        when(ticketRepository.findByUserId(1L)).thenReturn(Collections.emptyList());
+
+        TicketQueryService ticketService = new TicketQueryService(ticketRepository, jwtService, request);
+
         TicketNotFoundException exception = assertThrows(TicketNotFoundException.class, () -> {
             ticketService.getTicketsByCurrentUser();
         });
-            
-        assertEquals("No tickets found for user: user1", exception.getMessage());
-        verify(ticketRepository, times(1)).findByCreatedBy("user1");
-        
+
+        assertEquals("No tickets found for userId: 1", exception.getMessage());
+        verify(ticketRepository, times(1)).findByUserId(1L);
     }
 
     @Test
@@ -123,8 +129,10 @@ public class TicketQueryServiceTest {
 
         TicketRepository ticketRepository = mock(TicketRepository.class);
         when(ticketRepository.findById(ticket.getId())).thenReturn(java.util.Optional.of(ticket));
+        JwtService jwtService = mock(JwtService.class);
+        HttpServletRequest request = mock(HttpServletRequest.class);
 
-        TicketQueryService ticketService = new TicketQueryService(ticketRepository);
+        TicketQueryService ticketService = new TicketQueryService(ticketRepository, jwtService, request);
         TicketResponse response = ticketService.getTicketById(ticket.getId());
 
         assertEquals("Ticket 1", response.getTitle());
@@ -137,7 +145,8 @@ public class TicketQueryServiceTest {
         TicketRepository ticketRepository = mock(TicketRepository.class);
         when(ticketRepository.findById(1L)).thenReturn(java.util.Optional.empty());
 
-        TicketQueryService ticketService = new TicketQueryService(ticketRepository);
+        TicketQueryService ticketService = new TicketQueryService(ticketRepository, mock(JwtService.class),
+                mock(HttpServletRequest.class));
 
         assertThrows(TicketNotFoundException.class, () -> ticketService.getTicketById(1L));
 

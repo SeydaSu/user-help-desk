@@ -13,11 +13,14 @@ import org.junit.jupiter.api.Test;
 import com.ticket.dto.TicketResponse;
 import com.ticket.dto.TicketUpdateRequest;
 import com.ticket.exception.TicketNotFoundException;
+import com.ticket.kafka.KafkaProducerService;
 import com.ticket.model.TicketEntity;
 import com.ticket.repository.TicketRepository;
 import com.ticket.service.impl.TicketUpdateService;
 
 public class TicketUpdateServiceTest {
+
+    private final KafkaProducerService kafkaProducerService = mock(KafkaProducerService.class);
     
      @Test
     public void givenValidTicketUpdateRequest_whenUpdateTicket_thenReturnsUpdatedTicketResponse() {
@@ -36,7 +39,7 @@ public class TicketUpdateServiceTest {
         when(ticketRepository.findById(1L)).thenReturn(java.util.Optional.of(ticket));
         when(ticketRepository.save(any(TicketEntity.class))).thenReturn(ticket);
 
-        TicketUpdateService ticketService = new TicketUpdateService(ticketRepository);
+        TicketUpdateService ticketService = new TicketUpdateService(ticketRepository, kafkaProducerService);
         TicketResponse response = ticketService.updateTicket(1L, new TicketUpdateRequest("Updated Title", "Updated Description", 1L, 1L, 1L));
 
         assertEquals("Updated Title", response.getTitle());
@@ -49,7 +52,7 @@ public class TicketUpdateServiceTest {
         TicketRepository ticketRepository = mock(TicketRepository.class);
         when(ticketRepository.findById(1L)).thenReturn(java.util.Optional.empty());
 
-        TicketUpdateService ticketService = new TicketUpdateService(ticketRepository);
+        TicketUpdateService ticketService = new TicketUpdateService(ticketRepository, kafkaProducerService);
 
         assertThrows(TicketNotFoundException.class, () -> ticketService.updateTicket(1L, new TicketUpdateRequest("Updated Title", "Updated Description", 1L, 1L, 1L)));
 

@@ -9,4 +9,5 @@ public interface TicketRepository  extends JpaRepository<TicketEntity, Long> {
 
     List<TicketEntity> findByCreatedBy(String currentUsername);
 
+    List<TicketEntity> findByUserId(Long userId);
 }

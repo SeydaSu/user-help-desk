@@ -1,19 +1,16 @@
 package com.ticket.service.impl;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.ticket.config.JwtService;
 import com.ticket.dto.TicketResponse;
 import com.ticket.exception.TicketNotFoundException;
 import com.ticket.model.TicketEntity;
 import com.ticket.repository.TicketRepository;
 import com.ticket.service.ITicketQueryService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -21,25 +18,43 @@ import lombok.RequiredArgsConstructor;
 public class TicketQueryService implements ITicketQueryService {
 
     private final TicketRepository ticketRepository;
-    
+    private final JwtService jwtService;
+    private final HttpServletRequest request;
+
     @Override
     public List<TicketEntity> getTicketsByCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        
-        // Eğer authentication yoksa veya authenticated değilse exception fırlat
-        if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getName())) {
-            throw new TicketNotFoundException("User is not authenticated");
+        String token = extractTokenFromHeader();
+
+        if (token == null || !jwtService.isTokenValid(token)) {
+            throw new TicketNotFoundException("Invalid or missing token");
         }
-        
-        String currentUsername = auth.getName();
-        List<TicketEntity> tickets = ticketRepository.findByCreatedBy(currentUsername);
-        
+
+        String userIdStr = jwtService.extractUserId(token);
+
+        if (userIdStr == null || userIdStr.isBlank()) {
+            throw new TicketNotFoundException("User ID not found in token");
+        }
+
+        Long userId = Long.parseLong(userIdStr);
+        List<TicketEntity> tickets = ticketRepository.findByUserId(userId);
+
         if (tickets.isEmpty()) {
-            throw new TicketNotFoundException("No tickets found for user: " + currentUsername);
+            throw new TicketNotFoundException("No tickets found for userId: " + userId);
         }
-        
+
         return tickets;
     }
+
+    private String extractTokenFromHeader() {
+        String header = request.getHeader("Authorization");
+        if (header != null && header.startsWith("Bearer ")) {
+            return header.substring(7);
+        }
+        return null;
+    }
+
+
+
 
 
     @Override

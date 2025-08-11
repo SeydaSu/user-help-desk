@@ -19,7 +19,7 @@ public class TicketUpdateController {
 
     private final ITicketUpdateService ticketUpdateService;
 
-    @PostMapping("/ticket/{id}")
+    @PostMapping("ticket/update/{id}")
     public TicketResponse updateTicket(@PathVariable Long id, @RequestBody TicketUpdateRequest request) {
         return ticketUpdateService.updateTicket(id, request);
     }

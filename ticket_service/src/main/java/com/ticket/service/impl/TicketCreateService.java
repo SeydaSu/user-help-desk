@@ -1,19 +1,20 @@
 package com.ticket.service.impl;
 
 import org.springframework.stereotype.Service;
-import com.ticket.client.TagClient;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.ticket.dto.TagResponse;
+import java.time.LocalDateTime;
+
+import org.springframework.security.core.Authentication;
+import com.ticket.client.TagClient;
+import com.ticket.config.JwtAuthenticationToken;
+import com.ticket.config.JwtService;
 import com.ticket.dto.TicketRequest;
 import com.ticket.dto.TicketResponse;
+import com.ticket.kafka.KafkaProducerService;
 import com.ticket.model.TicketEntity;
 import com.ticket.repository.TicketRepository;
 import com.ticket.service.ITicketCreateService;
-
-import org.springframework.security.core.context.SecurityContextHolder;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,34 +22,46 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TicketCreateService implements ITicketCreateService {
 
-    @Autowired
-    private final TagClient tagClient; // feign client
-    
-    @Autowired
     private final TicketRepository ticketRepository;
-    private final JwtService jwtService;
+    private final KafkaProducerService kafkaProducerService;
 
     @Override
     public TicketResponse createTicket(TicketRequest request) {
-        String createdBy = "unknown";
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            createdBy = authentication.getName();
+        if (request.getTitle() == null || request.getTitle().isBlank() ||
+                request.getDescription() == null || request.getDescription().isBlank()) {
+            throw new RuntimeException("Title and Description cannot be null or empty");
         }
 
-       
-        // 3. Ticket oluştur
+        UserInfo currentUser = getCurrentUserInfo();
+
+        System.out.println("Creating ticket with user: " + currentUser.getId() + " - " + currentUser.getName());
+
         TicketEntity ticket = TicketEntity.builder()
-            .title(request.getTitle())
-            .description(request.getDescription())
-            .tagId(request.getTagId()) // valid olduğu teyit edildi
-            .createdBy(createdBy) // JWT'den alınır
-            .statusId(request.getStatusId()) // valid olduğu teyit edildi
-            .priorityId(request.getPriorityId()) 
-            .userId(request.getUserId()) 
-            .build();
+                .title(request.getTitle())
+                .description(request.getDescription())
+                .tagId(request.getTagId())
+                .createdBy(currentUser.getName())
+                .statusId(request.getStatusId())
+                .priorityId(request.getPriorityId())
+                .userId(currentUser.getId())
+                .build();
 
         ticketRepository.save(ticket);
+        String eventJson = """
+                    {
+                        "ticketId": "%s",
+                        "title": "%s",
+                        "createdBy": "%s",
+                        "eventType": "TICKET_CREATED",
+                        "timestamp": "%s"
+                    }
+                """.formatted(
+                ticket.getId(),
+                ticket.getTitle(),
+                currentUser.getName(),
+                LocalDateTime.now());
+
+        kafkaProducerService.sendTicketCreatedEvent(eventJson);
 
         return TicketResponse.builder()
                 .id(ticket.getId())
@@ -74,29 +87,6 @@ public class TicketCreateService implements ITicketCreateService {
         }
 
         return new UserInfo(-1L, "Anonymous");
-    }
-
-    private String getCurrentJwtToken() {
-        try {
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-                    .getRequest();
-            String authHeader = request.getHeader("Authorization");
-            if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                return authHeader.substring(7);
-            }
-        } catch (Exception e) {
-            System.out.println("Could not get JWT token from request: " + e.getMessage());
-        }
-        return null;
-    }
-
-    private Long parseUserId(String userIdStr) {
-        try {
-            return Long.parseLong(userIdStr);
-        } catch (NumberFormatException e) {
-            System.out.println("Failed to parse userId: " + userIdStr);
-            return null;
-        }
     }
 
     public static class UserInfo {

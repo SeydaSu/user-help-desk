@@ -11,8 +11,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,14 +20,18 @@ import com.ticket.config.JwtService;
 import com.ticket.client.AdminClient;
 import com.ticket.client.PriorityEntity;
 import com.ticket.client.StatusEntity;
+
 import com.ticket.dto.TagResponse;
 import com.ticket.dto.TicketRequest;
 import com.ticket.dto.TicketResponse;
+import com.ticket.kafka.KafkaProducerService;
 import com.ticket.model.TicketEntity;
 import com.ticket.repository.TicketRepository;
 import com.ticket.service.impl.TicketCreateService;
 
 public class TicketCreateServiceTest {
+
+    private final KafkaProducerService kafkaProducerService = mock(KafkaProducerService.class);
 
     @Test
     public void givenValidTicketRequest_whenCreateTicket_thenReturnsSavedTicketResponse() {
@@ -50,20 +52,15 @@ public class TicketCreateServiceTest {
         AdminClient adminClient = mock(AdminClient.class);
         TicketRepository ticketRepository = mock(TicketRepository.class);
 
-        StatusEntity status = new StatusEntity(1L, "Open", "user1");
-        PriorityEntity priority = new PriorityEntity(1L, "High", "user2");
-
-        List<StatusEntity> statusList = List.of(status);
-        List<PriorityEntity> priorityList = List.of(priority);
-
-        when(adminClient.getAllStatuses()).thenReturn(statusList);
-        when(adminClient.getAllPriorities()).thenReturn(priorityList);
-
-
         when(tagClient.getTagById(1L)).thenReturn(new TagResponse(1L, "Tag 1", null, null));
+        List<StatusEntity> statusList = List.of(new StatusEntity(1L, "Open", "admin1"));
+        when(adminClient.getAllStatuses()).thenReturn(statusList);
+
+        List<PriorityEntity> priorityList = List.of(new PriorityEntity(1L, "High", "admin1"));
+        when(adminClient.getAllPriorities()).thenReturn(priorityList);
         when(ticketRepository.save(any(TicketEntity.class))).thenReturn(ticket1);
 
-        TicketCreateService ticketService = new TicketCreateService(tagClient, ticketRepository);
+        TicketCreateService ticketService = new TicketCreateService(ticketRepository, kafkaProducerService);
 
 
         TicketRequest request = new TicketRequest("Ticket 1", "Description for ticket 1", 1L, 1L, 1L, 1L);
@@ -82,9 +79,8 @@ public class TicketCreateServiceTest {
     @Test
     public void givenNullOrEmptyTicketDetails_whenCreateTicket_thenThrowsInvalidInputException() {
         TicketRepository ticketRepository = mock(TicketRepository.class);
-        TagClient tagClient = mock(TagClient.class);
 
-        TicketCreateService ticketService = new TicketCreateService(tagClient, ticketRepository);
+        TicketCreateService ticketService = new TicketCreateService(ticketRepository, kafkaProducerService);
 
         TicketRequest nullRequest = new TicketRequest(null, null, 1L, 1L, 1L, 1L);
         TicketRequest emptyRequest = new TicketRequest("", "", 1L, 1L, 1L, 1L);

@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @FeignClient(name = "admin-service")
 public interface AdminClient {
 
-    @GetMapping("/api/v1/admin/ticket/priorities")
+    @GetMapping("/api/v1/admin/priorities")
     List<PriorityEntity> getAllPriorities();
 
-    @GetMapping("/api/v1/admin/ticket/statuses")
+    @GetMapping("/api/v1/admin/statuses")
     List<StatusEntity> getAllStatuses();
 
-    @GetMapping("/api/v1/admin/ticket/tags")
+    @GetMapping("/api/v1/admin/tags")
     List<TagEntity> getAllTags();
 }

@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import com.ticket.dto.TicketAdminUpdateRequest;
 import com.ticket.dto.TicketResponse;
-
+import com.ticket.kafka.KafkaProducerService;
 import com.ticket.model.TicketEntity;
 import com.ticket.repository.TicketRepository;
 import com.ticket.service.impl.TicketAdminService;
@@ -21,6 +21,7 @@ import com.ticket.service.impl.TicketAdminService;
 public class TicketAdminServiceTest {
 
 
+    private final KafkaProducerService kafkaProducerService = mock(KafkaProducerService.class);
       @Test
     public void givenValidTicketAdminUpdateRequest_whenAdminUpdateTicket_thenReturnsUpdatedTicketResponse() {
         // Given
@@ -50,7 +51,8 @@ public class TicketAdminServiceTest {
         when(ticketRepository.findById(1L)).thenReturn(java.util.Optional.of(originalTicket));
         when(ticketRepository.save(any(TicketEntity.class))).thenReturn(updatedTicket);
 
-        TicketAdminService ticketService = new TicketAdminService(ticketRepository);
+        
+        TicketAdminService ticketService = new TicketAdminService(ticketRepository, kafkaProducerService);
         TicketAdminUpdateRequest updateRequest = new TicketAdminUpdateRequest(2L, 2L, 2L, "Updated Response", 2L);
 
         // When
@@ -68,7 +70,7 @@ public class TicketAdminServiceTest {
         TicketRepository ticketRepository = mock(TicketRepository.class);
         when(ticketRepository.findById(1L)).thenReturn(java.util.Optional.empty());
 
-        TicketAdminService ticketService = new TicketAdminService(ticketRepository);
+        TicketAdminService ticketService = new TicketAdminService(ticketRepository, kafkaProducerService);
 
         assertThrows(RuntimeException.class, () -> ticketService.respondToTicket(1L, new TicketAdminUpdateRequest(2L,1L,null, "Updated Response", 1L)));
 
@@ -78,7 +80,7 @@ public class TicketAdminServiceTest {
     @Test
     public void givenNonValidTicketAdminUpdateRequest_whenAdminUpdateTicket_thenThrowsInvalidInputException() {
         TicketRepository ticketRepository = mock(TicketRepository.class);
-        TicketAdminService ticketService = new TicketAdminService(ticketRepository);
+        TicketAdminService ticketService = new TicketAdminService(ticketRepository, kafkaProducerService);
 
         TicketAdminUpdateRequest invalidRequest = new TicketAdminUpdateRequest(null, null, null, "Updated Response", 1L);
 
@@ -105,7 +107,7 @@ public class TicketAdminServiceTest {
         when(ticketRepository.findById(1L)).thenReturn(java.util.Optional.of(ticket));
         when(ticketRepository.save(any(TicketEntity.class))).thenReturn(ticket);
 
-        TicketAdminService ticketService = new TicketAdminService(ticketRepository);
+        TicketAdminService ticketService = new TicketAdminService(ticketRepository, kafkaProducerService);
         TicketResponse response = ticketService.updatePriority(1L,new TicketAdminUpdateRequest(2L, 1L, 2L, "Updated Response", 1L));
 
         assertEquals("Ticket 1", response.getTitle());
@@ -118,7 +120,7 @@ public class TicketAdminServiceTest {
         TicketRepository ticketRepository = mock(TicketRepository.class);
         when(ticketRepository.findById(1L)).thenReturn(java.util.Optional.empty());
 
-        TicketAdminService ticketService = new TicketAdminService(ticketRepository);
+        TicketAdminService ticketService = new TicketAdminService(ticketRepository, kafkaProducerService);
 
         assertThrows(RuntimeException.class, () -> ticketService.updatePriority(1L, new TicketAdminUpdateRequest(1L, 1L, 2L, "Updated Response", 1L)));
 
@@ -128,7 +130,7 @@ public class TicketAdminServiceTest {
     @Test
     public void givenNonValidTicketAdminRequest_whenUpdatePriority_thenThrowsInvalidInputException() {
         TicketRepository ticketRepository = mock(TicketRepository.class);
-        TicketAdminService ticketService = new TicketAdminService(ticketRepository);
+        TicketAdminService ticketService = new TicketAdminService(ticketRepository, kafkaProducerService);
 
         TicketAdminUpdateRequest invalidRequest = new TicketAdminUpdateRequest(null, null, null, "Updated Response", 1L);
 
@@ -155,7 +157,7 @@ public class TicketAdminServiceTest {
         when(ticketRepository.findById(1L)).thenReturn(java.util.Optional.of(ticket));
         when(ticketRepository.save(any(TicketEntity.class))).thenReturn(ticket);
 
-        TicketAdminService ticketService = new TicketAdminService(ticketRepository);
+        TicketAdminService ticketService = new TicketAdminService(ticketRepository, kafkaProducerService);
         TicketResponse response = ticketService.updateStatus(1L, new TicketAdminUpdateRequest(1L, 2L, 1L, "Updated Response", 1L));
 
         assertEquals("Ticket 1", response.getTitle());
@@ -169,7 +171,7 @@ public class TicketAdminServiceTest {
         TicketRepository ticketRepository = mock(TicketRepository.class);
         when(ticketRepository.findById(1L)).thenReturn(java.util.Optional.empty());
 
-        TicketAdminService ticketService = new TicketAdminService(ticketRepository);
+        TicketAdminService ticketService = new TicketAdminService(ticketRepository, kafkaProducerService);
 
         assertThrows(RuntimeException.class, () -> ticketService.updateStatus(1L, new TicketAdminUpdateRequest(1L, 2L, 1L, "Updated Response", 1L)));
 
@@ -179,7 +181,7 @@ public class TicketAdminServiceTest {
     @Test
     public void givenNonValidTicketAdminRequest_whenUpdateStatus_thenThrowsInvalidInputException() {
         TicketRepository ticketRepository = mock(TicketRepository.class);
-        TicketAdminService ticketService = new TicketAdminService(ticketRepository);
+        TicketAdminService ticketService = new TicketAdminService(ticketRepository, kafkaProducerService);
 
         TicketAdminUpdateRequest invalidRequest = new TicketAdminUpdateRequest(null, null, null, "Updated Response", 1L);
 
@@ -205,7 +207,7 @@ public class TicketAdminServiceTest {
         when(ticketRepository.findById(1L)).thenReturn(java.util.Optional.of(ticket));
         when(ticketRepository.save(any(TicketEntity.class))).thenReturn(ticket);
 
-        TicketAdminService ticketService = new TicketAdminService(ticketRepository);
+        TicketAdminService ticketService = new TicketAdminService(ticketRepository, kafkaProducerService);
         TicketResponse response = ticketService.updateTag(1L, new TicketAdminUpdateRequest(1L, 1L, 1L, "Updated Response", 2L));
 
         assertEquals("Ticket 1", response.getTitle());
@@ -218,7 +220,7 @@ public class TicketAdminServiceTest {
         TicketRepository ticketRepository = mock(TicketRepository.class);
         when(ticketRepository.findById(1L)).thenReturn(java.util.Optional.empty());
 
-        TicketAdminService ticketService = new TicketAdminService(ticketRepository);
+        TicketAdminService ticketService = new TicketAdminService(ticketRepository, kafkaProducerService);
 
         assertThrows(RuntimeException.class, () -> ticketService.updateTag(1L, new TicketAdminUpdateRequest(1L, 1L, 1L, "Updated Response", 2L)));
 

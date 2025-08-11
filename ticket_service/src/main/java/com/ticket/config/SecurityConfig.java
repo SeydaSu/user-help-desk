@@ -29,10 +29,6 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/v1/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/api/v1/ticket","/api/v1/ticket/**").permitAll()
-                .anyRequest().permitAll()
-                .requestMatchers("/api/v1/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .requestMatchers("/api/v1/ticket/**","/api/v1/ticket").authenticated() // Artık JWT gerekli!
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()// Preflight izin ver
                 .anyRequest().authenticated()
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
