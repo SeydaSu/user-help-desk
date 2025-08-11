@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Observable } from 'rxjs';
 import { AdminFacade } from '../../store/admin.facade';
 import { Tag } from '../../../models/tag.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-tags',
@@ -18,7 +19,8 @@ export class AddTags implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private adminFacade: AdminFacade
+    private adminFacade: AdminFacade,
+    private router: Router
   ) {
     this.tagForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]]
@@ -45,5 +47,9 @@ export class AddTags implements OnInit {
         }
       });
     }
+  }
+  
+  goBack() {
+    this.router.navigate(['/admin-dashboard']);
   }
 }
