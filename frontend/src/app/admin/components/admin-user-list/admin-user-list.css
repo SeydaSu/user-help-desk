@@ -1,0 +1,100 @@
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+.profile-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  transition: transform 0.2s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-4px);
+}
+
+.profile-card h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #3b8c54;
+  margin-bottom: 0.5rem;
+}
+
+.profile-card p {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 1rem;
+}
+
+.profile-card .meta-item {
+  font-size: 0.9rem;
+  color: #666;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.profile-card .ticket-actions {
+  text-align: right;
+}
+
+.btn-details {
+  background-color: #1b5421;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-details:hover {
+  background-color: #3b5142;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btn-page {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.page-info {
+  font-weight: bold;
+}
+
+
+.loading,
+.error {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.loading {
+  color: #3498db;
+}
+
+.error {
+  color: #e74c3c;
+}
+
+.header-actions {
+  position: relative;
+}
+
+.btn-success {
+  position: absolute;
+  top: 11px;
+  right: 16px;
+}

@@ -1,29 +1,26 @@
-<div *ngIf="isLoading">🔄 Kullanıcılar yükleniyor...</div>
+<div class="pagination-controls">
+  <button 
+    class="btn-page" 
+    (click)="currentPage = currentPage - 1" 
+    [disabled]="currentPage === 1">
+    ← Prev
+  </button>
 
-<div *ngIf="!isLoading && users.length > 0">
-  <h2>👥 Tüm Kullanıcılar</h2>
-  <table class="table table-bordered table-hover">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Kullanıcı Adı</th>
-        <th>Email</th>
-        <th>Rol</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let user of users; let i = index">
-        <td>{{ i + 1 }}</td>
-        <td>{{ user.username }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.role }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <span class="page-info">
+    Page {{ currentPage }} of {{ totalPages }}
+  </span>
+
+  <button 
+    class="btn-page" 
+    (click)="currentPage = currentPage + 1" 
+    [disabled]="currentPage === totalPages">
+    Next →
+  </button>
 </div>
-
-<div *ngIf="!isLoading && users.length === 0">
-  <div class="alert alert-info">Hiç kullanıcı bulunamadı.</div>
+<div class="card-container">
+  <div *ngFor="let user of paginatedUsers" class="profile-card">
+    <h2>{{ user.name }}</h2>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>ID:</strong> {{ user.id }}</p>
+  </div>
 </div>
-
-<div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
