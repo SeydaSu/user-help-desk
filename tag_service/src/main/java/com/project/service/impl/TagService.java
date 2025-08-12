@@ -48,6 +48,7 @@ public class TagService implements ITagService {
         TagEntity savedTag = tagRepository.save(tag);
 
         return TagResponse.builder()
+                .id(savedTag.getId())
                 .name(savedTag.getName())
                 .createdAt(savedTag.getCreatedAt())
                 .createdBy(savedTag.getCreatedBy())

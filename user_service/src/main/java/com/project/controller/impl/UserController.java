@@ -27,6 +27,6 @@ public class UserController implements IUserController {
 
     @GetMapping("/all")
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findByRole("USER");
     }
 }
